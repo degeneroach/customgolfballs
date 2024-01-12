@@ -34,7 +34,11 @@ const houseBrandItems = [
   },
 ];
 
-const PricingSection = () => {
+interface PricingSectionProps {
+  onOpen: () => void;
+}
+
+const PricingSection: React.FC<PricingSectionProps> = ({onOpen: onOpenOrderModal}) => {
   return (
     <Stack my={20} alignItems={"center"}>
       <VStack mb={10}>
@@ -45,7 +49,7 @@ const PricingSection = () => {
       </VStack>
       <PricingCard title="Bring Your Own Balls" data={byobItems} />
       <PricingCard title="Purchase House Brand Balls" data={houseBrandItems} />
-      <PrimaryButton size="lg">Order Online</PrimaryButton>
+      <PrimaryButton size="lg" onClick={onOpenOrderModal}>Order Online</PrimaryButton>
     </Stack>
   );
 };

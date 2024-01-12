@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   HStack,
-  Button,
   Link,
   Stack,
   IconButton,
@@ -14,15 +13,29 @@ import { AiOutlineClose } from "react-icons/ai";
 import PrimaryButton from "../UI/PrimaryButton";
 import TextIcon from "../UI/TextIcon";
 import { HiOutlineMail, HiOutlinePhone } from "react-icons/hi";
+import { useRouter } from "next/router";
 
 const navLinks = [
-  { name: "Directions", path: "#" },
-  { name: "Gallery", path: "#" },
-  { name: "Review Us On Google", path: "#" },
+  { name: "Directions", path: "/" },
+  { name: "Gallery", path: "/" },
+  { name: "Review Us On Google", path: "/" },
 ];
 
-const Navbar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+interface NavbarProps {
+  onOpen: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
+  const {
+    isOpen: isOpenNavbar,
+    onOpen: onOpenNavbar,
+    onClose: onCloseNavbar,
+  } = useDisclosure();
+  const router = useRouter();
+
+  const handleClickLogo = () => {
+    router.reload();
+  };
 
   return (
     <Box>
@@ -53,6 +66,8 @@ const Navbar = () => {
           alt="Logo1"
           w={{ base: "8rem", md: "12.875rem" }}
           h={"2.531rem"}
+          cursor={"pointer"}
+          onClick={handleClickLogo}
         />
         <HStack alignItems="center">
           <HStack
@@ -62,32 +77,38 @@ const Navbar = () => {
             spacing={{ md: "2rem", lg: "3rem" }}
           >
             {navLinks.map((link, index) => (
-              <NavLink key={index} {...link} onClose={onClose} />
+              <NavLink key={index} {...link} onClose={onCloseNavbar} />
             ))}
-            <PrimaryButton size="lg" display={{ base: "none", md: "block" }}>
+            <PrimaryButton
+              size="lg"
+              display={{ base: "none", md: "block" }}
+              onClick={onOpenOrderModal}
+            >
               Order online
             </PrimaryButton>
           </HStack>
         </HStack>
 
         <Flex flexDirection={"row"} display={{ base: "inherit", md: "none" }}>
-          <PrimaryButton size="md">Order online</PrimaryButton>
+          <PrimaryButton size="md" onClick={onOpenOrderModal}>
+            Order online
+          </PrimaryButton>
           <IconButton
             size="md"
             ml={4}
-            icon={isOpen ? <AiOutlineClose /> : <GiHamburgerMenu />}
+            icon={isOpenNavbar ? <AiOutlineClose /> : <GiHamburgerMenu />}
             aria-label="Open Menu"
-            onClick={isOpen ? onClose : onOpen}
+            onClick={isOpenNavbar ? onCloseNavbar : onOpenNavbar}
           />
         </Flex>
       </Flex>
 
       {/* Mobile Screen Links */}
-      {isOpen ? (
+      {isOpenNavbar ? (
         <Box py={8} display={{ base: "inherit", md: "none" }}>
           <Stack as="nav" spacing={2}>
             {navLinks.map((link, index) => (
-              <NavLink key={index} {...link} onClose={onClose} />
+              <NavLink key={index} {...link} onClose={onCloseNavbar} />
             ))}
           </Stack>
         </Box>
