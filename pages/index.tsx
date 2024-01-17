@@ -4,7 +4,7 @@ import HeroSection from "@/components/Layout/HeroSection";
 import Navbar from "@/components/Layout/Navbar";
 import PricingSection from "@/components/Layout/PricingSection";
 import OrderModal from "@/components/Modal/OrderModal";
-import Shape from "@/components/Shape";
+import Shape from "@/components/UI/Shape";
 import { Box, Button, Container, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 

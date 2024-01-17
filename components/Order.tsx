@@ -1,26 +1,27 @@
-import {
-  VStack,
-  Text,
-  Image,
-  Flex,
-  Box,
-  Input,
-  InputGroup,
-  Stack,
-  Switch,
-  InputRightElement,
-  HStack,
-} from "@chakra-ui/react";
+import { Text, Image, Flex, Stack, Switch, IconButton } from "@chakra-ui/react";
 import React from "react";
-import {
-  HiOutlineUpload,
-  HiChevronRight,
-  HiOutlinePlus,
-  HiOutlineMinus,
-} from "react-icons/hi";
+import { HiChevronRight, HiOutlineTrash } from "react-icons/hi";
 import PrimaryButton from "./UI/PrimaryButton";
+import UploadButton from "./UI/UploadButton";
+import TotalPriceInfo from "./TotalPriceInfo";
+import QuantityInput from "./QuantityInput";
+import useBoundStore from "@/store/boundStore";
+import PreviewImage from "./PreviewImage";
 
 const Order = () => {
+  const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
+  const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
+  const frontSideImage = useBoundStore((state) => state.frontSideImage);
+  const backSideImage = useBoundStore((state) => state.backSideImage);
+  const clearFrontSideImage = useBoundStore(
+    (state) => state.clearFrontSideImage
+  );
+  const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
+
+  const handleToggle = () => {
+    setIsDoubleSided(!isDoubleSided);
+  };
+
   return (
     <Flex flexDir={"column"}>
       <Stack my={10} alignItems={"center"}>
@@ -33,25 +34,12 @@ const Order = () => {
           Kirklands and play great. Use the below tool to submit your artwork.
         </Text>
       </Stack>
-      
+
       <Stack mb={10} alignItems={"center"}>
         <Text fontSize={"xl"} fontWeight={"bold"}>
           StarStrike Golf Balls
         </Text>
-        <Flex>
-          <Image
-            src="../images/NoLogoGolfBall.svg"
-            alt="Golf Ball"
-            w={"15rem"}
-            h={"12.5rem"}
-          />
-          <Image
-            src="../images/GolfBox.svg"
-            alt="Golf Box"
-            w={"15rem"}
-            h={"12.5rem"}
-          />
-        </Flex>
+        <PreviewImage />
       </Stack>
 
       <Stack mb={10} alignSelf={"center"} width={"25rem"}>
@@ -66,77 +54,70 @@ const Order = () => {
             alignItems={"center"}
           >
             <Text mr={2}>No</Text>
-            <Switch size={"lg"} />
+            <Switch isChecked={isDoubleSided} onChange={handleToggle} />
             <Text ml={2}>Yes</Text>
           </Flex>
         </Flex>
+
         <Flex alignItems={"center"} flex={1} mb={2}>
           <Text fontSize={"md"} fontWeight={"bold"} flex={1}>
             Upload artwork:
           </Text>
-          <Flex flex={1}>
-            <PrimaryButton leftIcon={<HiOutlineUpload size={20} />} size="lg">
-              Upload File
-            </PrimaryButton>
-          </Flex>
+          {frontSideImage?.url ? (
+            <Flex flex={1} color={"text-primary"} alignItems={"center"}>
+              <Text fontSize={"md"} overflowWrap={"anywhere"}>
+                {frontSideImage.name}
+              </Text>
+              <IconButton
+                color={"icon-active"}
+                bg={"none"}
+                icon={<HiOutlineTrash size={18} />}
+                aria-label="trash"
+                onClick={clearFrontSideImage}
+                _hover={{ bg: "none" }}
+              />
+            </Flex>
+          ) : (
+            <UploadButton side={"front"} />
+          )}
         </Flex>
+
+        {isDoubleSided && (
+          <Flex alignItems={"center"} flex={1} mb={2}>
+            <Text fontSize={"md"} fontWeight={"bold"} flex={1}>
+              2nd side artwork:
+            </Text>
+            {backSideImage?.url ? (
+              <Flex flex={1} color={"text-primary"} alignItems={"center"}>
+                <Text fontSize={"md"} overflowWrap={"anywhere"}>
+                  {backSideImage.name}
+                </Text>
+                <IconButton
+                  color={"icon-active"}
+                  bg={"none"}
+                  icon={<HiOutlineTrash size={18} />}
+                  aria-label="trash"
+                  onClick={clearBackSideImage}
+                  _hover={{ bg: "none" }}
+                />
+              </Flex>
+            ) : (
+              <UploadButton side={"back"} />
+            )}
+          </Flex>
+        )}
+
         <Flex alignItems={"center"}>
           <Text fontSize={"md"} fontWeight={"bold"} flex={1}>
             Golf balls amount:
           </Text>
           <Flex flex={1} fontSize={"xs"} color={"text-tertiary"}>
-            <InputGroup w={"10rem"}>
-              <Input
-                px={"1rem"}
-                color={"text-primary"}
-                backgroundColor={"surface-background-input"}
-                borderRadius={"1rem"}
-                placeholder="123"
-                size={"lg"}
-                _hover={{ bg: "surface-hover-alpha-20" }}
-              />
-              <InputRightElement pr={10} pt={2} color={"icon-active"}>
-                <HStack>
-                  <HiOutlineMinus size={16} cursor={"pointer"} />
-                  <HiOutlinePlus size={16} cursor={"pointer"} />
-                </HStack>
-              </InputRightElement>
-            </InputGroup>
+            <QuantityInput />
           </Flex>
         </Flex>
       </Stack>
 
-      <Stack
-        padding={10}
-        flexDir={"column"}
-        bgColor={"surface-background-secondary"}
-        borderRadius={"1rem"}
-        fontSize={"md"}
-        alignSelf={'center'}
-        w={'40rem'}
-      >
-        <Flex justifyContent={"space-between"}>
-          <Text>Ball Cost:</Text>
-          <Text>$96.00</Text>
-        </Flex>
-        <Flex justifyContent={"space-between"}>
-          <Text>Setup Cost:</Text>
-          <Text>$916.00</Text>
-        </Flex>
-        <Flex justifyContent={"space-between"}>
-          <Text>Print Cost:</Text>
-          <Text>$96.00</Text>
-        </Flex>
-        <Flex
-          justifyContent={"space-between"}
-          fontSize={"xl"}
-          fontWeight={"bold"}
-        >
-          <Text>Total: </Text>
-          <Text>$96.00</Text>
-        </Flex>
-      </Stack>
-
+      <TotalPriceInfo />
       <Stack alignItems={"center"} mt={10}>
         <PrimaryButton
           size="lg"

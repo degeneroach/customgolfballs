@@ -7,6 +7,8 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import { switchTheme } from "./custom/switch";
+import { stepperTheme } from "./custom/stepper";
+import { radioTheme } from "./custom/radio";
 
 const theme = extendTheme({
   styles: {
@@ -14,7 +16,7 @@ const theme = extendTheme({
       "html, body": {
         background: "surface-background-secondary",
         fontSize: "sm",
-        overflowX: 'hidden'
+        overflowX: "hidden",
       },
     }),
   },
@@ -46,7 +48,7 @@ const theme = extendTheme({
     "border-active": "#008FBC",
     "border-hover": "#2EC4B6",
   },
-  components: { Switch: switchTheme },
+  components: { Switch: switchTheme, Stepper: stepperTheme, Radio: radioTheme },
 });
 
 export default theme;
