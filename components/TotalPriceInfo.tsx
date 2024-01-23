@@ -1,7 +1,17 @@
+import useBoundStore from "@/store/boundStore";
 import { Stack, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 
 const TotalPriceInfo = () => {
+  const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
+  const totalPrice = useBoundStore((state) => state.totalPrice);
+  const ballCost = useBoundStore((state) => state.ballCost);
+  const quantity = useBoundStore((state) => state.quantity);
+  const singleSidedSetup = useBoundStore((state) => state.singleSidedSetup);
+  const doubleSidedSetup = useBoundStore((state) => state.doubleSidedSetup);
+  const singleSidedPrint = useBoundStore((state) => state.singleSidedPrint);
+  const doubleSidedPrint = useBoundStore((state) => state.doubleSidedPrint);
+
   return (
     <Stack
       padding={10}
@@ -10,19 +20,27 @@ const TotalPriceInfo = () => {
       borderRadius={"1rem"}
       fontSize={"md"}
       alignSelf={"center"}
-      w={"40rem"}
+      w={{base: "26rem", md: "40rem"}}
     >
       <Flex justifyContent={"space-between"}>
         <Text>Ball Cost:</Text>
-        <Text>$96.00</Text>
+        <Text>${(ballCost * quantity).toFixed(2) }</Text>
       </Flex>
       <Flex justifyContent={"space-between"}>
         <Text>Setup Cost:</Text>
-        <Text>$916.00</Text>
+        <Text>
+          ${(isDoubleSided ? doubleSidedSetup : singleSidedSetup).toFixed(2)}
+        </Text>
       </Flex>
       <Flex justifyContent={"space-between"}>
         <Text>Print Cost:</Text>
-        <Text>$96.00</Text>
+        <Text>
+          $
+          {(isDoubleSided
+            ? doubleSidedPrint * quantity
+            : singleSidedPrint * quantity
+          ).toFixed(2)}
+        </Text>
       </Flex>
       <Flex
         justifyContent={"space-between"}
@@ -30,7 +48,7 @@ const TotalPriceInfo = () => {
         fontWeight={"bold"}
       >
         <Text>Total: </Text>
-        <Text>$96.00</Text>
+        <Text>${totalPrice.toFixed(2)}</Text>
       </Flex>
     </Stack>
   );

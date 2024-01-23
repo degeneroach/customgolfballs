@@ -15,9 +15,13 @@ const FormInput: React.FC<FormInputProps> = ({
   ...props
 }) => {
   return (
-    <FormControl w={"18rem"} mb={5} isInvalid={isInvalid}>
+    <FormControl
+      w={{ base: "20rem", sm: "18rem" }}
+      mb={5}
+      isInvalid={isInvalid}
+    >
       <Input
-        w={"18rem"}
+        w={{ base: "20rem", sm: "18rem" }}
         p={"0.75rem 1rem"}
         color={"text-secondary"}
         borderRadius={"1rem"}

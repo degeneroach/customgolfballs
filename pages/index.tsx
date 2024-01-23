@@ -16,25 +16,23 @@ const Homepage = () => {
   } = useDisclosure();
 
   return (
-    <>
-      <Container
-        mt={4}
-        h={"100vh"}
-        maxWidth={"8xl"}
-        zIndex={1}
-        position={"relative"}
-      >
-        <Navbar onOpen={onOpenOrderModal} />
-        <HeroSection />
-        <PricingSection onOpen={onOpenOrderModal} />
-        <AddressSection />
-        <Footer />
-        <OrderModal isOpen={isOpenOrderModal} onClose={onCloseOrderModal} />
-        <Shape top="-25rem" right="-5rem" />
-        <Shape top="32rem" right="60rem" />
-        <Shape top="90rem" right="-40rem" />
-      </Container>
-    </>
+    <Container
+      mt={4}
+      h={"100vh"}
+      maxWidth={"8xl"}
+      zIndex={1}
+      position={"relative"}
+    >
+      <Navbar onOpen={onOpenOrderModal} />
+      <HeroSection />
+      <PricingSection onOpen={onOpenOrderModal} />
+      <AddressSection />
+      <Footer />
+      <OrderModal isOpen={isOpenOrderModal} onClose={onCloseOrderModal} />
+      <Shape top="-25rem" right="-5rem" />
+      <Shape top="32rem" right="60rem" />
+      <Shape top="90rem" right="-40rem" />
+    </Container>
   );
 };
 

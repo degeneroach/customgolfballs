@@ -27,7 +27,7 @@ const PricingInfo: React.FC<PricingCardProps> = ({ title, data }) => {
       <Flex
         direction="column"
         p={"1rem 2rem"}
-        width={{ base: "30rem", md: "40rem" }}
+        width={{ base: "28rem", md: "40rem" }}
         fontSize={"md"}
         borderRadius={"1rem"}
         color={"text-primary"}

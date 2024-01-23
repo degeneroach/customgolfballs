@@ -56,7 +56,11 @@ const StepperCustom: React.FC<StepperCustom> = ({
     >
       {steps.map((step, index) => (
         <Flex key={index}>
-          <Step onClick={() => setActiveStep(index)}>
+          <Step
+            onClick={() => {
+              isCompleteStep(index) && setActiveStep(index);
+            }}
+          >
             <Flex
               fontWeight={"bold"}
               alignItems={"center"}

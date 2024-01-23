@@ -31,21 +31,36 @@ export type CustomerFormValues = {
   shippingDetails: string;
 };
 
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
 export const customerDetailsSchema = yup.object().shape({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().required(),
-  phoneNumber: yup.string().required(),
-  streetAddress: yup.string(),
-  unit: yup.string(),
-  city: yup.string().required(),
-  province: yup.string().required(),
-  zipCode: yup.string().required(),
-  country: yup.string().required(),
-  shippingDetails: yup.string().required(),
+  firstName: yup.string().max(40).required(),
+  lastName: yup.string().max(40).required(),
+  email: yup.string().max(30).email().required(),
+  phoneNumber: yup
+    .string()
+    .max(20)
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required(),
+  streetAddress: yup.string().max(50),
+  unit: yup.string().max(20),
+  city: yup.string().max(20).required(),
+  province: yup.string().max(20).required(),
+  zipCode: yup.string().max(10).required(),
+  country: yup.string().max(20).required(),
+  shippingDetails: yup.string().max(20).required(),
 });
 
-const CustomerForm = () => {
+interface CustomerFormProps {
+  activeStep: number;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const CustomerForm: React.FC<CustomerFormProps> = ({
+  activeStep,
+  setActiveStep,
+}) => {
   const firstName = useBoundStore((state) => state.firstName);
   const lastName = useBoundStore((state) => state.lastName);
   const email = useBoundStore((state) => state.email);
@@ -68,14 +83,18 @@ const CustomerForm = () => {
   const setZipCode = useBoundStore((state) => state.setZipCode);
   const setCountry = useBoundStore((state) => state.setCountry);
   const setShippingDetails = useBoundStore((state) => state.setShippingDetails);
+  const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
+
 
   const {
     handleSubmit,
     register,
     reset,
     setValue,
-    formState: { errors },
+    setFocus,
+    formState: { errors, isValid, isSubmitted },
   } = useForm<CustomerFormValues>({
+    mode: "onChange",
     resolver: yupResolver(customerDetailsSchema),
   });
 
@@ -91,6 +110,7 @@ const CustomerForm = () => {
     setValue("zipCode", zipCode);
     setValue("country", country);
     setValue("shippingDetails", shippingDetails);
+    setFocus('firstName')
   }, []);
 
   const handleOnSubmit: SubmitHandler<CustomerFormValues> = async (data) => {
@@ -105,6 +125,8 @@ const CustomerForm = () => {
     setZipCode(data.zipCode);
     setCountry(data.country);
     setShippingDetails(data.shippingDetails);
+    setTotalPrice()
+    setActiveStep(activeStep + 1);
   };
 
   return (
@@ -113,7 +135,12 @@ const CustomerForm = () => {
         <Text fontSize={"xl"} fontWeight={"bold"} mb={6}>
           Contact Details
         </Text>
-        <Flex flexWrap="wrap" justifyContent="space-between" maxW="40rem">
+        <Flex
+          justifyContent="space-between"
+          maxW="40rem"
+          flexWrap={{ base: "nowrap", sm: "wrap" }}
+          flexDirection={{ base: "column", sm: "row" }}
+        >
           <FormInput
             id={"firstName"}
             placeholder="First Name"
@@ -137,6 +164,7 @@ const CustomerForm = () => {
             placeholder="Phone Number"
             isInvalid={!!errors?.phoneNumber}
             register={register}
+            type="number"
           />
         </Flex>
       </Stack>
@@ -146,9 +174,15 @@ const CustomerForm = () => {
           Shipping details
         </Text>
         <RadioGroup defaultValue={shippingDetails}>
-          <Flex justifyContent={"space-between"} w={"40rem"}>
+          <Flex
+            justifyContent={"space-between"}
+            w={"40rem"}
+            flexDir={{ base: "column", sm: "row" }}
+            alignItems={"center"}
+          >
             <Radio
               size={"xl"}
+              mb={{ base: 5, sm: 0 }}
               value="Flat Rate"
               {...register("shippingDetails")}
               isInvalid={!!errors?.shippingDetails}
@@ -178,10 +212,12 @@ const CustomerForm = () => {
           Shipping details
         </Text>
         <Flex
-          flexWrap="wrap"
+          flexWrap={{ base: "nowrap", sm: "wrap" }}
+          flexDirection={{ base: "column", sm: "row" }}
           justifyContent="space-between"
           maxW="40rem"
           mx="auto"
+          alignItems={"center"}
           mb={5}
         >
           <FormInput
@@ -227,7 +263,7 @@ const CustomerForm = () => {
         <PrimaryButton
           size="lg"
           rightIcon={<HiChevronRight size={16} />}
-          //   isDisabled
+          isDisabled={!isSubmitted && !isValid}
           type={"submit"}
         >
           Continue to checkout

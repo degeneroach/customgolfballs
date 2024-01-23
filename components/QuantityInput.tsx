@@ -13,11 +13,21 @@ const QuantityInput = () => {
   const incrementQty = useBoundStore((state) => state.increment);
   const decrementQty = useBoundStore((state) => state.decrement);
   const setQuantity = useBoundStore((state) => state.setQuantity);
+  const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
+  const setBallCost = useBoundStore((state) => state.setBallCost);
 
   const handleInputQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuantity = parseInt(e.target.value, 10);
     setQuantity(isNaN(newQuantity) ? 0 : newQuantity);
-  }
+    setTotalPrice();
+  };
+
+  const handleIncreaseQuantity = () => {
+    incrementQty(), setTotalPrice();
+  };
+  const handleDecreaseQuantity = () => {
+    decrementQty(), setTotalPrice();
+  };
 
   return (
     <InputGroup w={"10rem"}>
@@ -37,8 +47,8 @@ const QuantityInput = () => {
         <IconButton
           color={"icon-active"}
           icon={<HiOutlineMinus size={16} cursor={"pointer"} />}
-          aria-label="add quantity"
-          onClick={decrementQty}
+          aria-label="decrease quantity"
+          onClick={handleDecreaseQuantity}
           bg={"none"}
           size={"sm"}
           _hover={{ bg: "none" }}
@@ -47,8 +57,8 @@ const QuantityInput = () => {
         <IconButton
           color={"icon-active"}
           icon={<HiOutlinePlus size={16} cursor={"pointer"} />}
-          aria-label="minus quantity"
-          onClick={incrementQty}
+          aria-label="increase quantity"
+          onClick={handleIncreaseQuantity}
           bg={"none"}
           size={"sm"}
           _hover={{ bg: "none" }}

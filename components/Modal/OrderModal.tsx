@@ -45,8 +45,15 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
             isCompleteStep={isCompleteStep}
             isIncompleteStep={isIncompleteStep}
           />
-          {activeStep === 0 && <Order />}
-          {activeStep === 1 && <DetailsAndShipping />}
+          {activeStep === 0 && (
+            <Order activeStep={activeStep} setActiveStep={setActiveStep} />
+          )}
+          {activeStep === 1 && (
+            <DetailsAndShipping
+              activeStep={activeStep}
+              setActiveStep={setActiveStep}
+            />
+          )}
           {activeStep === 2 && <Payment />}
         </ModalBody>
       </ModalContent>

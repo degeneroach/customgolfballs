@@ -5,13 +5,19 @@ import { persist } from "zustand/middleware";
 import createCustomerDetailsSlice, {
   CustomerDetails,
 } from "./customerDetailsSlice";
+import createPriceCalculationSlice, {
+  PriceCalculation,
+} from "./priceCalculationSlice";
 
-const useBoundStore = create<UploadImage & BallQuantity & CustomerDetails>()(
+const useBoundStore = create<
+  UploadImage & BallQuantity & CustomerDetails & PriceCalculation
+>()(
   persist(
     (...a) => ({
       ...createUploadImageSlice(...a),
       ...createBallQuantitySlice(...a),
       ...createCustomerDetailsSlice(...a),
+      ...createPriceCalculationSlice(...a),
     }),
     {
       name: "user-details",

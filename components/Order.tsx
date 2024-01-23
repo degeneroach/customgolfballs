@@ -1,5 +1,5 @@
 import { Text, Image, Flex, Stack, Switch, IconButton } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { HiChevronRight, HiOutlineTrash } from "react-icons/hi";
 import PrimaryButton from "./UI/PrimaryButton";
 import UploadButton from "./UI/UploadButton";
@@ -7,9 +7,16 @@ import TotalPriceInfo from "./TotalPriceInfo";
 import QuantityInput from "./QuantityInput";
 import useBoundStore from "@/store/boundStore";
 import PreviewImage from "./PreviewImage";
+import API from "@/utils/axios";
 
-const Order = () => {
+interface OrderProps {
+  activeStep: number;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
+  const quantity = useBoundStore((state) => state.quantity);
   const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
@@ -17,10 +24,48 @@ const Order = () => {
     (state) => state.clearFrontSideImage
   );
   const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
+  const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
+  const setBallCost = useBoundStore((state) => state.setBallCost);
+  const setSingleSidedSetup = useBoundStore((state) => state.setSingleSidedSetup);
+  const setDoubleSidedSetup = useBoundStore((state) => state.setDoubleSidedSetup);
+  const setSingleSidedPrint = useBoundStore((state) => state.setSingleSidedPrint);
+  const setDoubleSidedPrint = useBoundStore((state) => state.setDoubleSidedPrint);
+
 
   const handleToggle = () => {
     setIsDoubleSided(!isDoubleSided);
+    setTotalPrice();
   };
+
+  useEffect(() => {
+    const getPrices = async () => {
+      const response = await API("GET", "create-payment-intent");
+      
+      response.priceList.map((price: any) => {
+        switch (price.name) {
+          case "BALL_COST":
+            setBallCost(price.price);
+            break;
+          case "SINGLE_SIDED_SETUP":
+            setSingleSidedSetup(price.price || 0);
+            break;
+          case "DOUBLE_SIDED_SETUP":
+            setDoubleSidedSetup(price.price || 0);
+            break;
+          case "SINGLE_SIDED_PRINT":
+            setSingleSidedPrint(price.price || 0);
+            break;
+          case "DOUBLE_SIDED_PRINT":
+            setDoubleSidedPrint(price.price || 0);
+            break;
+          default:
+            break;
+        }
+      });
+    };
+
+    getPrices();
+  }, []);
 
   return (
     <Flex flexDir={"column"}>
@@ -28,7 +73,7 @@ const Order = () => {
         <Text fontSize={"2rem"} fontWeight={"bold"} mb={4}>
           Order online
         </Text>
-        <Text fontSize={"xs"} width={"40.75rem"} textAlign={"center"}>
+        <Text fontSize={"xs"} width={{base: "26rem", md: "40.75rem"}} textAlign={"center"} overflowWrap={'break-word'}>
           We offer shipping and local pick up on our online orders. For online
           orders we offer StarStrike Golf Balls. They are comparable to
           Kirklands and play great. Use the below tool to submit your artwork.
@@ -122,7 +167,8 @@ const Order = () => {
         <PrimaryButton
           size="lg"
           rightIcon={<HiChevronRight size={16} />}
-          isDisabled
+          isDisabled={quantity === 0 || !frontSideImage.name}
+          onClick={() => setActiveStep(activeStep + 1)}
         >
           Continue to shipping details
         </PrimaryButton>

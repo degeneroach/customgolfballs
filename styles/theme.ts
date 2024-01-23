@@ -16,8 +16,10 @@ const theme = extendTheme({
       "html, body": {
         background: "surface-background-secondary",
         fontSize: "sm",
-        overflowX: "hidden",
       },
+      "body": {
+        "overflow-x": "hidden"
+      }
     }),
   },
   fonts: {
