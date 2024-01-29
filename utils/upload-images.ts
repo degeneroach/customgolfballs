@@ -10,7 +10,7 @@ const uploadImages = async (images: any) => {
 
     try {
       const response = await axios.post(
-      `https://api.cloudinary.com/v1_1/duhn85wln/image/upload`,
+      `https://api.cloudinary.com/v1_1/dlrbkffta/image/upload`,
         formData
       );
 
