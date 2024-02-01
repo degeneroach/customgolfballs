@@ -24,17 +24,19 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     (state) => state.clearFrontSideImage
   );
   const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
+  const setInitialTotalPrice = useBoundStore((state) => state.setInitialTotalPrice);
   const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
   const setBallCost = useBoundStore((state) => state.setBallCost);
   const setSingleSidedSetup = useBoundStore((state) => state.setSingleSidedSetup);
   const setDoubleSidedSetup = useBoundStore((state) => state.setDoubleSidedSetup);
   const setSingleSidedPrint = useBoundStore((state) => state.setSingleSidedPrint);
   const setDoubleSidedPrint = useBoundStore((state) => state.setDoubleSidedPrint);
-
+  const setShippingFee = useBoundStore((state) => state.setShippingFee);
 
   const handleToggle = () => {
     setIsDoubleSided(!isDoubleSided);
-    setTotalPrice();
+    setTotalPrice()
+    setInitialTotalPrice()
   };
 
   useEffect(() => {
@@ -58,6 +60,9 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
           case "DOUBLE_SIDED_PRINT":
             setDoubleSidedPrint(price.price || 0);
             break;
+          case "SHIPPING_FEE":
+            setShippingFee(price.price || 0);
+            break;
           default:
             break;
         }
@@ -73,7 +78,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
         <Text fontSize={"2rem"} fontWeight={"bold"} mb={4}>
           Order online
         </Text>
-        <Text fontSize={"xs"} width={{base: "26rem", md: "40.75rem"}} textAlign={"center"} overflowWrap={'break-word'}>
+        <Text fontSize={"xs"} width={{base: "20rem", md: "40.75rem"}} textAlign={"center"} overflowWrap={'break-word'}>
           We offer shipping and local pick up on our online orders. For online
           orders we offer StarStrike Golf Balls. They are comparable to
           Kirklands and play great. Use the below tool to submit your artwork.
@@ -87,7 +92,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
         <PreviewImage />
       </Stack>
 
-      <Stack mb={10} alignSelf={"center"} width={"25rem"}>
+      <Stack mb={10} alignSelf={"center"} width={{base: "20rem", sm:"25rem"}}>
         <Flex alignItems={"center"} justifyContent={"space-between"} mb={4}>
           <Text fontSize={"md"} fontWeight={"bold"} flex={1}>
             Double Sided:

@@ -72,6 +72,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
   const zipCode = useBoundStore((state) => state.zipCode);
   const country = useBoundStore((state) => state.country);
   const shippingDetails = useBoundStore((state) => state.shippingDetails);
+  const shippingFee = useBoundStore((state) => state.shippingFee);
   const setFirstName = useBoundStore((state) => state.setFirstName);
   const setLastName = useBoundStore((state) => state.setLastName);
   const setEmail = useBoundStore((state) => state.setEmail);
@@ -176,9 +177,9 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
         <RadioGroup defaultValue={shippingDetails}>
           <Flex
             justifyContent={"space-between"}
-            w={"40rem"}
+            w={{base: "20rem", sm: "40rem"}}
             flexDir={{ base: "column", sm: "row" }}
-            alignItems={"center"}
+            alignItems={'center'}
           >
             <Radio
               size={"xl"}
@@ -186,17 +187,19 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
               value="Flat Rate"
               {...register("shippingDetails")}
               isInvalid={!!errors?.shippingDetails}
-            >
+              w={{base: '20rem', sm: '18rem'}}
+              >
               <Text fontSize={"md"} fontWeight={"bold"}>
                 Flat Rate Shipping
               </Text>
-              <Text fontSize={"sm"}>$15</Text>
+              <Text fontSize={"sm"}>${shippingFee}</Text>
             </Radio>
             <Radio
               size={"xl"}
               value="Pick-up"
               {...register("shippingDetails")}
               isInvalid={!!errors?.shippingDetails}
+              w={{base: '20rem', sm: '18rem'}}
             >
               <Text fontSize={"md"} fontWeight={"bold"}>
                 Local Pick-Up (Free)
@@ -216,7 +219,6 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
           flexDirection={{ base: "column", sm: "row" }}
           justifyContent="space-between"
           maxW="40rem"
-          mx="auto"
           alignItems={"center"}
           mb={5}
         >

@@ -35,9 +35,9 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
         bg="surface-background-tertiary-alpha-20"
         backdropFilter="blur(50px)"
       />
-      <ModalContent maxWidth={"60rem"} borderRadius={"2rem"}>
-        <ModalCloseButton p={"2rem"} bg={"none"} />
-        <ModalBody px={10} py={20}>
+      <ModalContent maxWidth={{base:"24rem", sm:"60rem"}} borderRadius={"2rem"}>
+        <ModalCloseButton p={"2rem"} display={{base: "none", sm: "flex"}} bg={"none"} />
+        <ModalBody px={10} py={{base: 10, sm: 20}}>
           <StepperCustom
             activeStep={activeStep}
             setActiveStep={setActiveStep}

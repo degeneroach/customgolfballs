@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 
 const TotalPriceInfo = () => {
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
-  const totalPrice = useBoundStore((state) => state.totalPrice);
+  const initialTotalPrice = useBoundStore((state) => state.initialTotalPrice);
   const ballCost = useBoundStore((state) => state.ballCost);
   const quantity = useBoundStore((state) => state.quantity);
   const singleSidedSetup = useBoundStore((state) => state.singleSidedSetup);
@@ -20,7 +20,7 @@ const TotalPriceInfo = () => {
       borderRadius={"1rem"}
       fontSize={"md"}
       alignSelf={"center"}
-      w={{base: "26rem", md: "40rem"}}
+      w={{base: "20rem", sm: "40rem"}}
     >
       <Flex justifyContent={"space-between"}>
         <Text>Ball Cost:</Text>
@@ -48,7 +48,7 @@ const TotalPriceInfo = () => {
         fontWeight={"bold"}
       >
         <Text>Total: </Text>
-        <Text>${totalPrice.toFixed(2)}</Text>
+        <Text>${initialTotalPrice.toFixed(2)}</Text>
       </Flex>
     </Stack>
   );

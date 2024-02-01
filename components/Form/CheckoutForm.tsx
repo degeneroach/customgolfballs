@@ -96,7 +96,7 @@ const CheckoutForm: React.FC<{
   };
 
   return (
-    <Stack w={{ base: "26rem", md: "28rem" }} alignSelf={"center"}>
+    <Stack w={{ base: "20rem", md: "28rem" }} alignSelf={"center"}>
       <form onSubmit={onSubmit}>
         <Stack>
           <PaymentElement options={paymentElementOptions} />
@@ -108,7 +108,7 @@ const CheckoutForm: React.FC<{
             borderRadius="0.5rem"
             isDisabled={isLoading || !stripe || !elements}
           >
-            PAY ${totalPrice}
+            PAY ${totalPrice.toFixed(2)}
           </PrimaryButton>
           {errorMessage && (
             <Text textAlign={"center"} color={"red"} fontSize={"md"}>

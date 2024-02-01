@@ -18,8 +18,8 @@ const theme = extendTheme({
         fontSize: "sm",
       },
       "body": {
-        "overflow-x": "hidden"
-      }
+        "overflowX": "hidden"
+       }
     }),
   },
   fonts: {
@@ -51,6 +51,10 @@ const theme = extendTheme({
     "border-hover": "#2EC4B6",
   },
   components: { Switch: switchTheme, Stepper: stepperTheme, Radio: radioTheme },
+  breakpoints: {
+    base: "0px",
+    sm: "590px"
+  }
 });
 
 export default theme;

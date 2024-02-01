@@ -67,7 +67,7 @@ const Payment = () => {
       <CustomerDetails />
       <Divider
         my={10}
-        w={"40rem"}
+        w={{base: "20rem", sm: "40rem"}}
         alignSelf={"center"}
         borderColor={"border-primary"}
       />

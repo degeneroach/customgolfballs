@@ -21,7 +21,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
       </Text>
       <Flex
         p={10}
-        w={{base: "26rem", sm: "40rem"}}
+        w={{base: "20rem", sm: "40rem"}}
         fontSize={"md"}
         alignItems={"center"}
         bgColor={"surface-background-secondary"}
@@ -32,7 +32,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
         <Stack
           flex={isDoubleSided ? 1.75 : 1}
           justifyContent={"flex-end"}
-          direction={"row"}
+          direction={{base: "column" ,sm: "row"}}
           mb={{base: 5, sm: 0}}
         >
           <PrintImage hasLabel={false} imageUrl={frontSideImage?.url} />
@@ -40,7 +40,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
             <PrintImage hasLabel={false} imageUrl={backSideImage?.url} />
           )}
         </Stack>
-        <VStack flex={1.5} alignItems={"flex-start"} fontSize={"md"}>
+        <VStack flex={1.5} alignItems={{ base: 'center',sm: "flex-start"}} fontSize={"md"}>
           <Text fontWeight={"bold"}>Order Details:</Text>
           <Text>{ballQuantity}x StarStrike Golf Balls</Text>
           {isDoubleSided ? (

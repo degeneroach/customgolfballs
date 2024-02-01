@@ -15,8 +15,8 @@ const CustomerDetails = () => {
   const country = useBoundStore((state) => state.country);
 
   return (
-    <Stack alignSelf={'center'} direction={"row"} w={{base: "26rem", sm: "40rem"}}>
-      <Stack flex={1} fontSize={"md"}>
+    <Stack alignSelf={'center'} direction={{base: "column", sm: "row"}} w={{base: "20rem", sm: "40rem"}}>
+      <Stack flex={1} fontSize={"md"} mb={5}>
         <Text fontWeight={"bold"}>Shipping Details</Text>
         {streetAddress && <Text>{streetAddress}</Text>}
         {unit && <Text>{unit}</Text>}

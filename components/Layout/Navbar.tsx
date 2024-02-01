@@ -7,8 +7,13 @@ import {
   IconButton,
   useDisclosure,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  chakra,
 } from "@chakra-ui/react";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import PrimaryButton from "../UI/PrimaryButton";
 import TextIcon from "../UI/TextIcon";
@@ -39,7 +44,11 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
 
   return (
     <Box>
-      <Flex justifyContent={"flex-end"} mb={2}>
+      <Flex
+        justifyContent={"flex-end"}
+        mb={2}
+        display={{ base: "none", sm: "flex" }}
+      >
         <TextIcon
           mb={2}
           mr={4}
@@ -64,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
           mr={4}
           src={"../images/Logo1.svg"}
           alt="Logo1"
-          w={{ base: "8rem", md: "12.875rem" }}
+          w={{ base: "9.375rem", md: "12.875rem" }}
           h={"2.531rem"}
           cursor={"pointer"}
           onClick={handleClickLogo}
@@ -90,13 +99,20 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
         </HStack>
 
         <Flex flexDirection={"row"} display={{ base: "inherit", md: "none" }}>
-          <PrimaryButton size="md" onClick={onOpenOrderModal}>
-            Order online
-          </PrimaryButton>
           <IconButton
             size="md"
             ml={4}
-            icon={isOpenNavbar ? <AiOutlineClose /> : <GiHamburgerMenu />}
+            icon={
+              isOpenNavbar ? (
+                <AiOutlineClose />
+              ) : (
+                <Image
+                  src="../images/HamburgerIcon.svg"
+                  cursor={"pointer"}
+                  alt="Hamburger Icon"
+                />
+              )
+            }
             aria-label="Open Menu"
             onClick={isOpenNavbar ? onCloseNavbar : onOpenNavbar}
           />
@@ -105,12 +121,70 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
 
       {/* Mobile Screen Links */}
       {isOpenNavbar ? (
-        <Box py={8} display={{ base: "inherit", md: "none" }}>
-          <Stack as="nav" spacing={2}>
-            {navLinks.map((link, index) => (
-              <NavLink key={index} {...link} onClose={onCloseNavbar} />
-            ))}
-          </Stack>
+        <Box
+          py={8}
+          display={{ base: "inherit", md: "none" }}
+          position={"relative"}
+        >
+          <Modal onClose={onCloseNavbar} size={"full"} isOpen={isOpenNavbar}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalCloseButton zIndex={1} />
+              <ModalBody
+                textAlign={"center"}
+                fontWeight={"bold"}
+                py={"8rem"}
+                fontSize={"md"}
+                bg="surface-background-secondary"
+              >
+                <Stack as="nav" spacing={2}>
+                  {navLinks.map((link, index) => (
+                    <NavLink key={index} {...link} onClose={onCloseNavbar} />
+                  ))}
+                </Stack>
+                <Flex flexDir={"column"} alignItems={"center"}>
+                  <TextIcon
+                    mb={"3rem"}
+                    leftIcon={HiOutlineMail}
+                    isBgTransparent={true}
+                    textColor={"icon-primary"}
+                  >
+                    customgolfballprinting@gmail.com
+                  </TextIcon>
+                  <TextIcon
+                    mb={"3rem"}
+                    leftIcon={HiOutlinePhone}
+                    isBgTransparent={true}
+                    textColor={"icon-primary"}
+                  >
+                    (604) 600-4347
+                  </TextIcon>
+                </Flex>
+                <PrimaryButton
+                  size="lg"
+                  onClick={() => {
+                    onOpenOrderModal(), onCloseNavbar();
+                  }}
+                >
+                  Order online
+                </PrimaryButton>
+                <Image
+                  src="../images/Circle50.svg"
+                  alt="Circle"
+                  position={"absolute"}
+                  bottom={0}
+                  left={0}
+                />
+                <Image
+                  src="../images/Circle25.svg"
+                  alt="Circle"
+                  position={"absolute"}
+                  right={0}
+                  top={0}
+                />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
         </Box>
       ) : null}
     </Box>
@@ -128,7 +202,7 @@ const NavLink = ({ name, path, onClose }: NavLinkProps) => {
   return (
     <Link
       href={path}
-      lineHeight="inherit"
+      mb={{base: "3rem", md: 0}}
       fontWeight={700}
       fontSize={"md"}
       textColor={"text-primary"}
@@ -141,7 +215,14 @@ const NavLink = ({ name, path, onClose }: NavLinkProps) => {
       }}
       onClick={() => onClose()}
     >
-      {name}
+      <chakra.span
+        _hover={{
+          borderBottomWidth: {base: 2, md: 0},
+          borderColor:{base: 'text-hover', sm: 'none'} 
+        }}
+      >
+        {name}
+      </chakra.span>
     </Link>
   );
 };

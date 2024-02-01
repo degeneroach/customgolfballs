@@ -15,7 +15,8 @@ const PrintImage: React.FC<PrintImageProps> = ({
       <Image
         src="../images/NoLogoGolfBall.svg"
         alt="Golf Ball"
-        w={hasLabel ? "15rem" : "9rem"}
+        w={"auto"}
+        maxWidth={hasLabel ? "15rem" : "9rem"}
         h={hasLabel ? "12.5rem" : "7.5rem"}
       />
       <Box

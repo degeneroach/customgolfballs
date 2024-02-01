@@ -19,7 +19,7 @@ const Shape: React.FC<ShapeProps> = ({top, right, ...props}) => {
       bgGradient={"linear(to-b, surface-hover, surface-active)"}
       opacity={0.1}
       zIndex="-1"
-      display={{base: 'none', md: 'block' }}
+      display={{base: 'none', md:'block' }}
       {...props}
     />
   );

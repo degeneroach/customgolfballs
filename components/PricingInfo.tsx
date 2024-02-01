@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -20,14 +21,14 @@ interface PricingCardProps {
 
 const PricingInfo: React.FC<PricingCardProps> = ({ title, data }) => {
   return (
-    <VStack mb={10}>
+    <Stack mb={10} alignItems={'center'}>
       <Text mb={6} fontSize={"xl"} fontWeight={700}>
         {title}
       </Text>
       <Flex
         direction="column"
         p={"1rem 2rem"}
-        width={{ base: "28rem", md: "40rem" }}
+        width={{ base: "24rem", sm: "40rem" }}
         fontSize={"md"}
         borderRadius={"1rem"}
         color={"text-primary"}
@@ -59,7 +60,7 @@ const PricingInfo: React.FC<PricingCardProps> = ({ title, data }) => {
           </Flex>
         ))}
       </Flex>
-    </VStack>
+    </Stack>
   );
 };
 

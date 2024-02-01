@@ -6,7 +6,7 @@ import {
   StepTitle,
   useSteps,
   Stepper,
-  Divider,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import React from "react";
 import {
@@ -17,9 +17,9 @@ import {
 import DividerCustom from "./DividerCustom";
 
 const steps = [
-  { title: "Customize", icon: <HiOutlinePencil size={16} /> },
-  { title: "Details & Shipping", icon: <HiOutlineUser size={16} /> },
-  { title: "Payment", icon: <HiOutlineCreditCard size={16} /> },
+  { title: "Customize", icon: <HiOutlinePencil size={20} /> },
+  { title: "Details & Shipping", icon: <HiOutlineUser size={20} /> },
+  { title: "Payment", icon: <HiOutlineCreditCard size={20} /> },
 ];
 
 interface StepperCustom {
@@ -48,6 +48,13 @@ const StepperCustom: React.FC<StepperCustom> = ({
     }
   };
 
+  const isMobileView = useBreakpointValue(
+    {
+      base: true,
+      md: false,
+    }
+  );
+
   return (
     <Stepper
       index={activeStep}
@@ -64,7 +71,7 @@ const StepperCustom: React.FC<StepperCustom> = ({
             <Flex
               fontWeight={"bold"}
               alignItems={"center"}
-              padding={"0.75rem 1rem"}
+              padding={{base: "0.75rem", sm: "0.75rem 1rem"}}
               cursor={"pointer"}
               color={getColor(index)}
               bg={isActiveStep(index) ? "surface-background-tertiary" : "none"}
@@ -73,14 +80,16 @@ const StepperCustom: React.FC<StepperCustom> = ({
                 color: isIncompleteStep(index) ? "text-hover" : "none",
               }}
             >
-              <Box mr={1}>{step.icon}</Box>
-              <StepTitle>{step.title}</StepTitle>
+              <Box mr={{ base: 0, sm: 1 }} alignItems={"center"}>
+                {step.icon}
+              </Box>
+              {isMobileView ? <></> : <StepTitle>{step.title}</StepTitle>}
             </Flex>
           </Step>
         </Flex>
       ))}
-      <DividerCustom top={"50%"} left={"30%"} />
-      <DividerCustom top={"50%"} left={"68%"} />
+      <DividerCustom left={{ base: "28%", sm: "30%" }} />
+      <DividerCustom right={{ base: "28%", sm: "30%" }} />
     </Stepper>
   );
 };
