@@ -19,11 +19,12 @@ import PrimaryButton from "../UI/PrimaryButton";
 import TextIcon from "../UI/TextIcon";
 import { HiOutlineMail, HiOutlinePhone } from "react-icons/hi";
 import { useRouter } from "next/router";
+import { DIRECTIONS, EMAIL, GALLERY, REVIEW, TEL_NUMBER } from "@/utils/constants";
 
 const navLinks = [
-  { name: "Directions", path: "/" },
-  { name: "Gallery", path: "/" },
-  { name: "Review Us On Google", path: "/" },
+  { name: "Directions", path: DIRECTIONS },
+  { name: "Gallery", path: GALLERY },
+  { name: "Review Us On Google", path: REVIEW },
 ];
 
 interface NavbarProps {
@@ -56,7 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
           isBgTransparent={true}
           textColor={"icon-primary"}
         >
-          customgolfballprinting@gmail.com
+          {EMAIL}
         </TextIcon>
         <TextIcon
           mb={2}
@@ -64,7 +65,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
           isBgTransparent={true}
           textColor={"icon-primary"}
         >
-          (604) 600-4347
+          {TEL_NUMBER}
         </TextIcon>
       </Flex>
 
@@ -149,7 +150,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
                     isBgTransparent={true}
                     textColor={"icon-primary"}
                   >
-                    customgolfballprinting@gmail.com
+                    {EMAIL}
                   </TextIcon>
                   <TextIcon
                     mb={"3rem"}
@@ -157,7 +158,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen: onOpenOrderModal }) => {
                     isBgTransparent={true}
                     textColor={"icon-primary"}
                   >
-                    (604) 600-4347
+                    {TEL_NUMBER}
                   </TextIcon>
                 </Flex>
                 <PrimaryButton
@@ -214,6 +215,7 @@ const NavLink = ({ name, path, onClose }: NavLinkProps) => {
         color: "text-active",
       }}
       onClick={() => onClose()}
+      isExternal
     >
       <chakra.span
         _hover={{

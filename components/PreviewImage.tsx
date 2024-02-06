@@ -16,7 +16,7 @@ const PreviewImage = () => {
   return (
     <>
       {isMobileView ? (
-        <Flex gap={0} flexDir={{ base: "column", sm: "row" }}>
+        <Flex gap={0} flexDir={{ base: "column", sm: "row" }} alignItems={'center'}>
           <PrintImage imageUrl={frontSideImage?.url} />
           {isDoubleSided ? (
             <PrintImage imageUrl={backSideImage?.url} />

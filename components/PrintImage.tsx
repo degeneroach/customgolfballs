@@ -16,16 +16,16 @@ const PrintImage: React.FC<PrintImageProps> = ({
         src="../images/NoLogoGolfBall.svg"
         alt="Golf Ball"
         w={"auto"}
-        maxWidth={hasLabel ? "15rem" : "9rem"}
-        h={hasLabel ? "12.5rem" : "7.5rem"}
+        maxWidth={hasLabel ? { base: "22rem", sm: "15rem" } : "9rem"}
+        h={hasLabel ? { base: "19.5rem", sm: "12.5rem" } : "7.5rem"}
       />
       <Box
         borderWidth={2}
         borderStyle={hasLabel ? "dashed" : "none"}
         borderColor={"border-hover"}
         borderRadius={hasLabel ? 5 : 0}
-        w={hasLabel ? "5rem" : "2.8rem"}
-        h={hasLabel ? "5rem" : "2.8rem"}
+        w={hasLabel ? { base: "7rem", sm: "5rem" } : "2.8rem"}
+        h={hasLabel ? { base: "7rem", sm: "5rem" } : "2.8rem"}
         position={"absolute"}
         top={"50%"}
         left={"50%"}
@@ -38,7 +38,7 @@ const PrintImage: React.FC<PrintImageProps> = ({
             h={"full"}
             objectFit={"contain"}
             src={imageUrl}
-            alt="Print Image"
+            alt="Preview Image"
           />
         )}
       </Box>

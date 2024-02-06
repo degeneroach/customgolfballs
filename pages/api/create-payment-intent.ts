@@ -69,6 +69,7 @@ export default async function handler(
         name,
         phone: phoneNumber,
       },
+      receipt_email: email
     });
 
     res.status(200).json({
