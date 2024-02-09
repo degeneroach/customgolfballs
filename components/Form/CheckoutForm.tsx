@@ -26,6 +26,15 @@ const CheckoutForm: React.FC<{
   const totalPrice = useBoundStore((state) => state.totalPrice);
   const quantity = useBoundStore((state) => state.quantity);
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
+  const unit = useBoundStore((state) => state.unit);
+  const streetAddress = useBoundStore((state) => state.streetAddress);
+  const city = useBoundStore((state) => state.city);
+  const province = useBoundStore((state) => state.province);
+  const zipCode = useBoundStore((state) => state.zipCode);
+  const country = useBoundStore((state) => state.country);
+  const firstName = useBoundStore((state) => state.firstName);
+  const lastName = useBoundStore((state) => state.lastName);
+  const shippingDetails = useBoundStore((state) => state.shippingDetails);
   const setQuantity = useBoundStore((state) => state.setQuantity);
   const clearTotalPrice = useBoundStore((state) => state.clearTotalPrice);
   const setFirstName = useBoundStore((state) => state.setFirstName);
@@ -62,11 +71,23 @@ const CheckoutForm: React.FC<{
       //Upload Image
       const imagesToUpload = [frontSideImage, backSideImage];
       const responseUrls = await uploadImages(imagesToUpload);
+
       const updatePaymentIntent = await API("POST", "update-payment-intent", {
         paymentIntent: paymentIntent?.id,
+        orderId: paymentIntent?.payment_method,
         arrayImageUrl: responseUrls,
         quantity,
         isDoubleSided,
+        unit,
+        streetAddress,
+        city,
+        province,
+        zipCode,
+        country,
+        totalPrice,
+        firstName,
+        lastName,
+        shippingDetails
       });
 
       clearFrontSideImage();

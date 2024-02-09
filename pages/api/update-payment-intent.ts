@@ -1,3 +1,4 @@
+import { sendMail } from "@/utils/nodemailer";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
@@ -12,7 +13,23 @@ export default async function handler(
   if (req.method === "POST") {
     const data = await req.body;
     
-    const { paymentIntent: paymentIntentId, arrayImageUrl, quantity, isDoubleSided} = data;
+    const {
+      paymentIntent: paymentIntentId,
+      arrayImageUrl,
+      quantity,
+      isDoubleSided,
+      orderId,
+      unit,
+      streetAddress,
+      city,
+      province,
+      zipCode,
+      country,
+      totalPrice,
+      firstName,
+      lastName,
+      shippingDetails
+    } = data;
 
     const paymentIntent = await stripe.paymentIntents.update(paymentIntentId, {
       metadata: {
@@ -22,6 +39,25 @@ export default async function handler(
         "Quantity": quantity,
       },
     });
+
+    const sendEmailPayload = {
+      frontSideImage: arrayImageUrl[0],
+      backSideImage: arrayImageUrl[1],
+      isDoubleSided,
+      orderId,
+      unit,
+      streetAddress,
+      city,
+      province,
+      zipCode,
+      country,
+      totalPrice,
+      firstName,
+      lastName,
+      shippingDetails
+    };
+
+    await sendMail(sendEmailPayload);
 
     res.status(200).json({
       clientSecret: paymentIntent.client_secret,
