@@ -1,4 +1,15 @@
-import { Text, Image, Flex, Stack, Switch, IconButton } from "@chakra-ui/react";
+import {
+  Text,
+  Image,
+  Flex,
+  Stack,
+  Switch,
+  IconButton,
+  useRadioGroup,
+  HStack,
+  Box,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { HiChevronRight, HiOutlineTrash } from "react-icons/hi";
 import PrimaryButton from "./UI/PrimaryButton";
@@ -8,6 +19,10 @@ import QuantityInput from "./QuantityInput";
 import useBoundStore from "@/store/boundStore";
 import PreviewImage from "./PreviewImage";
 import API from "@/utils/axios";
+import Card from "./Card";
+import MySwiper from "./Swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 interface OrderProps {
   activeStep: number;
@@ -20,29 +35,41 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
+  const ballType = useBoundStore((state) => state.ballType);
+  const setBallType = useBoundStore((state) => state.setBallType);
   const clearFrontSideImage = useBoundStore(
     (state) => state.clearFrontSideImage
   );
   const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
-  const setInitialTotalPrice = useBoundStore((state) => state.setInitialTotalPrice);
+  const setInitialTotalPrice = useBoundStore(
+    (state) => state.setInitialTotalPrice
+  );
   const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
   const setBallCost = useBoundStore((state) => state.setBallCost);
-  const setSingleSidedSetup = useBoundStore((state) => state.setSingleSidedSetup);
-  const setDoubleSidedSetup = useBoundStore((state) => state.setDoubleSidedSetup);
-  const setSingleSidedPrint = useBoundStore((state) => state.setSingleSidedPrint);
-  const setDoubleSidedPrint = useBoundStore((state) => state.setDoubleSidedPrint);
+  const setSingleSidedSetup = useBoundStore(
+    (state) => state.setSingleSidedSetup
+  );
+  const setDoubleSidedSetup = useBoundStore(
+    (state) => state.setDoubleSidedSetup
+  );
+  const setSingleSidedPrint = useBoundStore(
+    (state) => state.setSingleSidedPrint
+  );
+  const setDoubleSidedPrint = useBoundStore(
+    (state) => state.setDoubleSidedPrint
+  );
   const setShippingFee = useBoundStore((state) => state.setShippingFee);
 
   const handleToggle = () => {
     setIsDoubleSided(!isDoubleSided);
-    setTotalPrice()
-    setInitialTotalPrice()
+    setTotalPrice();
+    setInitialTotalPrice();
   };
 
   useEffect(() => {
     const getPrices = async () => {
       const response = await API("GET", "create-payment-intent");
-      
+
       response.priceList.map((price: any) => {
         switch (price.name) {
           case "BALL_COST":
@@ -72,18 +99,79 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     getPrices();
   }, []);
 
+  const options = ["StarStrike", "Callaway SuperSoft", "Titleist Pro V1"];
+
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: "package",
+    defaultValue: ballType || "StarStrike",
+    onChange: (value) => setBallType(value),
+  });
+
+  const group = getRootProps();
+
+  const isMobileView = useBreakpointValue({
+    base: true,
+    md: false,
+  });
+
   return (
     <Flex flexDir={"column"}>
       <Stack my={10} alignItems={"center"}>
         <Text fontSize={"2rem"} fontWeight={"bold"} mb={4}>
           Order online
         </Text>
-        <Text fontSize={"xs"} width={{base: "20rem", md: "40.75rem"}} textAlign={"center"} overflowWrap={'break-word'}>
+        <Text
+          fontSize={"xs"}
+          width={{ base: "20rem", md: "40.75rem" }}
+          textAlign={"center"}
+          overflowWrap={"break-word"}
+        >
           We offer shipping and local pick up on our online orders. For online
           orders we offer StarStrike Golf Balls. They are comparable to
           Kirklands and play great. Use the below tool to submit your artwork.
         </Text>
       </Stack>
+
+      <Text fontSize={"xl"} fontWeight={"bold"} textAlign={"center"} mb={4}>
+        Pick Your Balls
+      </Text>
+
+      {isMobileView && (
+        <Text fontSize={"xs"} textAlign={"center"} mb={4}>
+          Swipe for more options
+        </Text>
+      )}
+
+      {isMobileView ? (
+        <Flex textAlign={"center"} mb={10}>
+          <Swiper
+            onSlideChange={(value) => console.log({ value })}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {options.map((value) => {
+              const radio = getRadioProps({ value });
+              return (
+                <SwiperSlide key={value}>
+                  <Flex justifyContent={"center"}>
+                    <Card {...radio}>{value}</Card>
+                  </Flex>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Flex>
+      ) : (
+        <HStack {...group} justifyContent={"center"} my={8}>
+          {options.map((value) => {
+            const radio = getRadioProps({ value });
+            return (
+              <Card key={value} {...radio}>
+                {value}
+              </Card>
+            );
+          })}
+        </HStack>
+      )}
 
       <Stack mb={10} alignItems={"center"}>
         <Text fontSize={"xl"} fontWeight={"bold"}>
@@ -92,7 +180,11 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
         <PreviewImage />
       </Stack>
 
-      <Stack mb={10} alignSelf={"center"} width={{base: "20rem", sm:"25rem"}}>
+      <Stack
+        mb={10}
+        alignSelf={"center"}
+        width={{ base: "20rem", sm: "25rem" }}
+      >
         <Flex alignItems={"center"} justifyContent={"space-between"} mb={4}>
           <Text fontSize={"md"} fontWeight={"bold"} flex={1}>
             Double Sided:

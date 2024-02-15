@@ -10,6 +10,7 @@ import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
 const QuantityInput = () => {
   const quantity = useBoundStore((state) => state.quantity);
+  const ballType = useBoundStore((state) => state.ballType);
   const incrementQty = useBoundStore((state) => state.increment);
   const decrementQty = useBoundStore((state) => state.decrement);
   const setQuantity = useBoundStore((state) => state.setQuantity);
@@ -35,7 +36,7 @@ const QuantityInput = () => {
     <InputGroup w={"10rem"}>
       <Input
         px={"1rem"}
-        value={quantity}
+        value={quantity >= 0 ? quantity : 0}
         onChange={handleInputQuantity}
         color={"text-primary"}
         backgroundColor={"surface-background-input"}
@@ -43,6 +44,8 @@ const QuantityInput = () => {
         placeholder="123"
         size={"lg"}
         _hover={{ bg: "surface-hover-alpha-20" }}
+        _disabled={{ color: "text-primary" }}
+        isDisabled={ballType != "StarStrike"}
         min={0}
       />
       <InputRightElement pr={10} pt={2} color={"icon-active"}>
@@ -54,7 +57,7 @@ const QuantityInput = () => {
           bg={"none"}
           size={"sm"}
           _hover={{ bg: "none" }}
-          isDisabled={quantity === 0}
+          isDisabled={quantity <= 0}
         />
         <IconButton
           color={"icon-active"}
