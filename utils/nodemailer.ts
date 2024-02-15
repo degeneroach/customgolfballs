@@ -45,7 +45,7 @@ export async function sendMail({
 
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
-    to: "dev.aristurtle@gmail.com",
+    to: "hello@customgolfballprinting.com",
     subject: "New Order Notification",
     html: `
     <body>
