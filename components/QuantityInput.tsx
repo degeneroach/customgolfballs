@@ -36,7 +36,7 @@ const QuantityInput = () => {
     <InputGroup w={"10rem"}>
       <Input
         px={"1rem"}
-        value={quantity >= 0 ? quantity : 0}
+        value={quantity}
         onChange={handleInputQuantity}
         color={"text-primary"}
         backgroundColor={"surface-background-input"}

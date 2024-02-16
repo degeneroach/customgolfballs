@@ -42,7 +42,6 @@ const Card: React.FC<any> = (props) => {
         h={"23.688rem"}
         bg={"surface-background-secondary"}
         cursor="pointer"
-        borderWidth="1px"
         borderRadius="md"
         boxShadow="md"
         _checked={{
@@ -50,6 +49,9 @@ const Card: React.FC<any> = (props) => {
           borderWidth: 2,
           color: "text-active",
         }}
+        borderWidth={props.isActive ? 2 : "1px"}
+        borderColor={props.isActive && "border-active"}
+        color={props.isActive && "text-active"}
       >
         <Flex flexDirection={"column"}>
           <Text fontSize={"md"} textAlign={"center"} fontWeight={"bold"}>
@@ -72,7 +74,7 @@ const Card: React.FC<any> = (props) => {
             </Text>
           </Box>
           <Box alignSelf={"center"} mt={5}>
-            {props.isChecked ? (
+            {props.isChecked || props.isActive ? (
               <HiCheckCircle size={20} />
             ) : (
               <HiOutlineCheckCircle size={20} />

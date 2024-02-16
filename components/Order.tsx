@@ -10,7 +10,7 @@ import {
   Box,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HiChevronRight, HiOutlineTrash } from "react-icons/hi";
 import PrimaryButton from "./UI/PrimaryButton";
 import UploadButton from "./UI/UploadButton";
@@ -60,6 +60,11 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   );
   const setShippingFee = useBoundStore((state) => state.setShippingFee);
 
+  const isMobileView = useBreakpointValue({
+    base: true,
+    md: false,
+  });
+
   const handleToggle = () => {
     setIsDoubleSided(!isDoubleSided);
     setTotalPrice();
@@ -99,6 +104,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     getPrices();
   }, []);
 
+  //Group Radio
   const options = ["StarStrike", "Callaway SuperSoft", "Titleist Pro V1"];
 
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -109,10 +115,27 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
 
   const group = getRootProps();
 
-  const isMobileView = useBreakpointValue({
-    base: true,
-    md: false,
-  });
+  //SwiperJS
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>();
+
+  const handleSlideChange = (swiper: any) => {
+    setCurrentSlideIndex(swiper.activeIndex);
+    const selectedOption = options[swiper.activeIndex];
+    setBallType(selectedOption);
+  };
+
+  const initialSlide = (ballType: string) => {
+    switch (ballType) {
+      case "StarStrike":
+        return 0;
+      case "Callaway SuperSoft":
+        return 1;
+      case "Titleist Pro V1":
+        return 2;
+      default:
+        break;
+    }
+  };
 
   return (
     <Flex flexDir={"column"}>
@@ -145,16 +168,16 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
       {isMobileView ? (
         <Flex textAlign={"center"} mb={10}>
           <Swiper
-            onSlideChange={(value) => console.log({ value })}
-            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={handleSlideChange}
+            initialSlide= {initialSlide(ballType)}
           >
-            {options.map((value) => {
+            {options.map((value, index) => {
               const radio = getRadioProps({ value });
               return (
                 <SwiperSlide key={value}>
-                  <Flex justifyContent={"center"}>
-                    <Card {...radio}>{value}</Card>
-                  </Flex>
+                    <Flex justifyContent={"center"}>
+                      <Card {...radio} isActive={index === currentSlideIndex}>{value}</Card>
+                    </Flex>
                 </SwiperSlide>
               );
             })}
