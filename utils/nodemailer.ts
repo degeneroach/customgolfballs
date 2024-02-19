@@ -4,6 +4,7 @@ type EmailPayload = {
   frontSideImage: string;
   backSideImage: string;
   isDoubleSided: boolean;
+  ballType: string;
   orderId: string;
   unit: string;
   streetAddress: string;
@@ -15,12 +16,14 @@ type EmailPayload = {
   firstName: string;
   lastName: string;
   shippingDetails: string
+  quantity: number;
 };
 
 export async function sendMail({
   frontSideImage,
   backSideImage,
   isDoubleSided,
+  ballType,
   orderId,
   unit,
   streetAddress,
@@ -31,7 +34,8 @@ export async function sendMail({
   totalPrice,
   firstName,
   lastName,
-  shippingDetails
+  shippingDetails,
+  quantity
 }: EmailPayload) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -54,6 +58,8 @@ export async function sendMail({
         <li><strong>Order ID:</strong> ${orderId}</li>
         <li><strong>Customer Name:</strong> ${firstName} ${lastName}</li>
         <li><strong>Payment Amount:</strong> $${totalPrice.toFixed(2)}</li>
+        <li><strong>Ball Type:</strong> ${ballType}</li>
+        <li><strong>Quantity:</strong> ${quantity}</li>
         <li><strong>Pick-up or Shipping:</strong> ${shippingDetails}</li>
         <li><strong>Shipping Address:</strong> ${unit}, ${streetAddress}, ${city}, ${province}, ${country}, ${zipCode}</li>
       </ul>

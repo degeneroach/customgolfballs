@@ -17,6 +17,7 @@ export default async function handler(
       paymentIntent: paymentIntentId,
       arrayImageUrl,
       quantity,
+      ballType,
       isDoubleSided,
       orderId,
       unit,
@@ -37,12 +38,14 @@ export default async function handler(
         "Back Side Image": arrayImageUrl[1],
         "Double Sided": isDoubleSided,
         "Quantity": quantity,
+        "Ball Type": ballType
       },
     });
 
     const sendEmailPayload = {
       frontSideImage: arrayImageUrl[0],
       backSideImage: arrayImageUrl[1],
+      ballType,
       isDoubleSided,
       orderId,
       unit,
@@ -54,7 +57,8 @@ export default async function handler(
       totalPrice,
       firstName,
       lastName,
-      shippingDetails
+      shippingDetails,
+      quantity
     };
 
     await sendMail(sendEmailPayload);

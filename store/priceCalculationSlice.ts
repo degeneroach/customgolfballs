@@ -38,28 +38,52 @@ const createPriceCalculationSlice: StateCreator<
   doubleSidedPrint: 0,
   shippingFee: 0,
   setTotalPrice: () =>
-    set((state: any) => ({
-      totalPrice: state.isDoubleSided
-        ? state.ballCost * state.quantity +
-          state.doubleSidedPrint * state.quantity +
-          state.doubleSidedSetup +
-          (state.shippingDetails === "Flat Rate" ? state.shippingFee : 0)
-        : state.ballCost * state.quantity +
-          state.singleSidedPrint * state.quantity +
-          state.singleSidedSetup +
-          (state.shippingDetails === "Flat Rate" ? state.shippingFee : 0),
-    })),
-    setInitialTotalPrice: () =>
-    set((state: any) => ({
-      initialTotalPrice: state.isDoubleSided
-        ? state.ballCost * state.quantity +
-          state.doubleSidedPrint * state.quantity +
-          state.doubleSidedSetup
-        : state.ballCost * state.quantity +
-          state.singleSidedPrint * state.quantity +
-          state.singleSidedSetup,
-    })),
-  clearTotalPrice: () => set((state) => ({ totalPrice: 0, initialTotalPrice: 0 })),
+    set((state: any) => {
+      let ballPrice;
+      if (state.ballType === "Callaway SuperSoft") {
+        ballPrice = 34.99 / 12;
+      } else if (state.ballType === "Titleist Pro V1") {
+        ballPrice = 79.99 / 12;
+      } else {
+        ballPrice = state.ballCost || 2;
+      }
+
+      return {
+        totalPrice: state.isDoubleSided
+          ? ballPrice * state.quantity +
+            state.doubleSidedPrint * state.quantity +
+            state.doubleSidedSetup +
+            (state.shippingDetails === "Flat Rate" ? state.shippingFee : 0)
+          : state.ballCost * state.quantity +
+            state.singleSidedPrint * state.quantity +
+            state.singleSidedSetup +
+            (state.shippingDetails === "Flat Rate" ? state.shippingFee : 0),
+      };
+    }),
+  setInitialTotalPrice: () =>
+    set((state: any) => {
+      let ballPrice;
+      if (state.ballType === "Callaway SuperSoft") {
+        ballPrice = 34.99 / 12;
+      } else if (state.ballType === "Titleist Pro V1") {
+        ballPrice = 79.99 / 12;
+      } else {
+        ballPrice = state.ballCost || 2;
+      }
+
+      return {
+        ballCost: ballPrice,
+        initialTotalPrice: state.isDoubleSided
+          ? ballPrice * state.quantity +
+            state.doubleSidedPrint * state.quantity +
+            state.doubleSidedSetup
+          : ballPrice * state.quantity +
+            state.singleSidedPrint * state.quantity +
+            state.singleSidedSetup,
+      };
+    }),
+  clearTotalPrice: () =>
+    set((state) => ({ totalPrice: 0, initialTotalPrice: 0 })),
   setBallCost: (cost: number) => set((state) => ({ ballCost: cost })),
   setSingleSidedSetup: (cost: number) =>
     set((state) => ({ singleSidedSetup: cost })),
@@ -69,8 +93,7 @@ const createPriceCalculationSlice: StateCreator<
     set((state) => ({ singleSidedPrint: cost })),
   setDoubleSidedPrint: (cost: number) =>
     set((state) => ({ doubleSidedPrint: cost })),
-  setShippingFee: (cost: number) =>
-    set((state) => ({ shippingFee: cost })),
+  setShippingFee: (cost: number) => set((state) => ({ shippingFee: cost })),
 });
 
 export default createPriceCalculationSlice;

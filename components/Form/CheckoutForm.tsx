@@ -25,6 +25,7 @@ const CheckoutForm: React.FC<{
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const totalPrice = useBoundStore((state) => state.totalPrice);
   const quantity = useBoundStore((state) => state.quantity);
+  const ballType = useBoundStore((state) => state.ballType);
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
   const unit = useBoundStore((state) => state.unit);
   const streetAddress = useBoundStore((state) => state.streetAddress);
@@ -76,6 +77,7 @@ const CheckoutForm: React.FC<{
         paymentIntent: paymentIntent?.id,
         orderId: paymentIntent?.payment_method,
         arrayImageUrl: responseUrls,
+        ballType,
         quantity,
         isDoubleSided,
         unit,

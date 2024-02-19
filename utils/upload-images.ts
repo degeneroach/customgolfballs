@@ -5,7 +5,7 @@ const uploadImages = async (images: any) => {
 
   for (const image of images) {
     const formData = new FormData();
-    formData.append("file", image.file);
+    formData.append("file", image?.file);
     formData.append("upload_preset", "my-uploads");
 
     try {

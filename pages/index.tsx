@@ -5,10 +5,8 @@ import Navbar from "@/components/Layout/Navbar";
 import PricingSection from "@/components/Layout/PricingSection";
 import OrderModal from "@/components/Modal/OrderModal";
 import Shape from "@/components/UI/Shape";
-import {
-  Container,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Container, useDisclosure } from "@chakra-ui/react";
+import Head from "next/head";
 import React from "react";
 
 const Homepage = () => {
@@ -19,6 +17,16 @@ const Homepage = () => {
   } = useDisclosure();
 
   return (
+    <>
+      <Head>
+        <title>
+          Custom Golf Balls | Personalized Golf Balls Printed In Van
+        </title>
+        <meta
+          name="description"
+          content="Expert in custom golf ball printing for tournaments, gifts, & personal sets. Get creative, personalized golf balls at 3200 E Broadway, Vancouver."
+        />
+      </Head>
       <Container
         mt={4}
         h={"100vh"}
@@ -36,6 +44,7 @@ const Homepage = () => {
         <Shape top="32rem" right="60rem" />
         <Shape top="95rem" right="-40rem" />
       </Container>
+    </>
   );
 };
 

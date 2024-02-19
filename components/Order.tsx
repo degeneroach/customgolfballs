@@ -7,8 +7,10 @@ import {
   IconButton,
   useRadioGroup,
   HStack,
+  Box,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HiChevronRight, HiOutlineTrash } from "react-icons/hi";
 import PrimaryButton from "./UI/PrimaryButton";
 import UploadButton from "./UI/UploadButton";
@@ -18,6 +20,9 @@ import useBoundStore from "@/store/boundStore";
 import PreviewImage from "./PreviewImage";
 import API from "@/utils/axios";
 import Card from "./Card";
+import MySwiper from "./Swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 interface OrderProps {
   activeStep: number;
@@ -30,6 +35,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
+  const ballType = useBoundStore((state) => state.ballType);
   const setBallType = useBoundStore((state) => state.setBallType);
   const clearFrontSideImage = useBoundStore(
     (state) => state.clearFrontSideImage
@@ -53,6 +59,11 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     (state) => state.setDoubleSidedPrint
   );
   const setShippingFee = useBoundStore((state) => state.setShippingFee);
+
+  const isMobileView = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   const handleToggle = () => {
     setIsDoubleSided(!isDoubleSided);
@@ -93,15 +104,38 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     getPrices();
   }, []);
 
+  //Group Radio
   const options = ["StarStrike", "Callaway SuperSoft", "Titleist Pro V1"];
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "package",
-    defaultValue: "StarStrike",
+    defaultValue: ballType || "StarStrike",
     onChange: (value) => setBallType(value),
   });
 
   const group = getRootProps();
+
+  //SwiperJS
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>();
+
+  const handleSlideChange = (swiper: any) => {
+    setCurrentSlideIndex(swiper.activeIndex);
+    const selectedOption = options[swiper.activeIndex];
+    setBallType(selectedOption);
+  };
+
+  const initialSlide = (ballType: string) => {
+    switch (ballType) {
+      case "StarStrike":
+        return 0;
+      case "Callaway SuperSoft":
+        return 1;
+      case "Titleist Pro V1":
+        return 2;
+      default:
+        break;
+    }
+  };
 
   return (
     <Flex flexDir={"column"}>
@@ -121,19 +155,46 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
         </Text>
       </Stack>
 
-      <Text fontSize={"xl"} fontWeight={"bold"} textAlign={"center"} mb={4}> 
+      <Text fontSize={"xl"} fontWeight={"bold"} textAlign={"center"} mb={4}>
         Pick Your Balls
       </Text>
-      <HStack {...group} justifyContent={"center"} my={8}>
-        {options.map((value) => {
-          const radio = getRadioProps({ value });
-          return (
-            <Card key={value} {...radio}>
-              {value}
-            </Card>
-          );
-        })}
-      </HStack>
+
+      {isMobileView && (
+        <Text fontSize={"xs"} textAlign={"center"} mb={4}>
+          Swipe for more options
+        </Text>
+      )}
+
+      {isMobileView ? (
+        <Flex textAlign={"center"} mb={10}>
+          <Swiper
+            onSlideChange={handleSlideChange}
+            initialSlide= {initialSlide(ballType)}
+          >
+            {options.map((value, index) => {
+              const radio = getRadioProps({ value });
+              return (
+                <SwiperSlide key={value}>
+                    <Flex justifyContent={"center"}>
+                      <Card {...radio} isActive={index === currentSlideIndex}>{value}</Card>
+                    </Flex>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Flex>
+      ) : (
+        <HStack {...group} justifyContent={"center"} my={8}>
+          {options.map((value) => {
+            const radio = getRadioProps({ value });
+            return (
+              <Card key={value} {...radio}>
+                {value}
+              </Card>
+            );
+          })}
+        </HStack>
+      )}
 
       <Stack mb={10} alignItems={"center"}>
         <Text fontSize={"xl"} fontWeight={"bold"}>

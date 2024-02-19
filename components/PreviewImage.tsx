@@ -7,6 +7,7 @@ const PreviewImage = () => {
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
+  const ballType = useBoundStore((state) => state.ballType);
 
   const isMobileView = useBreakpointValue({
     base: true,
@@ -16,13 +17,17 @@ const PreviewImage = () => {
   return (
     <>
       {isMobileView ? (
-        <Flex gap={0} flexDir={{ base: "column", sm: "row" }} alignItems={'center'}>
+        <Flex
+          gap={0}
+          flexDir={{ base: "column", sm: "row" }}
+          alignItems={"center"}
+        >
           <PrintImage imageUrl={frontSideImage?.url} />
           {isDoubleSided ? (
             <PrintImage imageUrl={backSideImage?.url} />
           ) : (
             <Image
-              src="../images/GolfBox.svg"
+              src={`../images/${ballType}.svg`}
               alt="Golf Box"
               w={"15rem"}
               h={"12.5rem"}
@@ -36,7 +41,7 @@ const PreviewImage = () => {
             <PrintImage imageUrl={backSideImage?.url} />
           ) : (
             <Image
-              src="../images/GolfBox.svg"
+              src={`../images/${ballType}.svg`}
               alt="Golf Box"
               w={"15rem"}
               h={"12.5rem"}

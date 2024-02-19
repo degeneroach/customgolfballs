@@ -13,19 +13,19 @@ const Card: React.FC<any> = (props) => {
       name: "StarStrike",
       price: "$2.00 / Per Ball",
       description: "No MOQ - Purchase in increments of 1 ball.",
-      img: "../images/GolfBox.svg",
+      img: "../images/StarStrike.svg",
     },
     {
       name: "Callaway SuperSoft",
       price: "$34.99 / Dozen",
       description: "Purchase in increments of 12",
-      img: "../images/GolfBox2.svg",
+      img: "../images/Callaway SuperSoft.svg",
     },
     {
       name: "Titleist Pro V1",
       price: "$72.99 / Dozen",
       description: "Purchase in increments of 12",
-      img: "../images/GolfBox3.svg",
+      img: "../images/Titleist Pro V1.svg",
     },
   ];
 
@@ -42,7 +42,6 @@ const Card: React.FC<any> = (props) => {
         h={"23.688rem"}
         bg={"surface-background-secondary"}
         cursor="pointer"
-        borderWidth="1px"
         borderRadius="md"
         boxShadow="md"
         _checked={{
@@ -50,6 +49,9 @@ const Card: React.FC<any> = (props) => {
           borderWidth: 2,
           color: "text-active",
         }}
+        borderWidth={props.isActive ? 2 : "1px"}
+        borderColor={props.isActive && "border-active"}
+        color={props.isActive && "text-active"}
       >
         <Flex flexDirection={"column"}>
           <Text fontSize={"md"} textAlign={"center"} fontWeight={"bold"}>
@@ -72,7 +74,7 @@ const Card: React.FC<any> = (props) => {
             </Text>
           </Box>
           <Box alignSelf={"center"} mt={5}>
-            {props.isChecked ? (
+            {props.isChecked || props.isActive ? (
               <HiCheckCircle size={20} />
             ) : (
               <HiOutlineCheckCircle size={20} />
