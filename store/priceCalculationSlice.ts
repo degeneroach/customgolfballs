@@ -11,6 +11,12 @@ export interface PriceCalculation {
   doubleSidedSetup: number;
   singleSidedPrint: number;
   doubleSidedPrint: number;
+  singleSidedSetupSS: number;
+  doubleSidedSetupSS: number;
+  singleSidedSetupCS: number;
+  doubleSidedSetupCS: number;
+  singleSidedSetupTP: number;
+  doubleSidedSetupTP: number;
   shippingFee: number;
   setTotalPrice: () => void;
   setInitialTotalPrice: () => void;
@@ -18,6 +24,12 @@ export interface PriceCalculation {
   setBallCost: (arg: number) => void;
   setSingleSidedSetup: (arg: number) => void;
   setDoubleSidedSetup: (arg: number) => void;
+  setSingleSidedSetupSS: (arg: number) => void;
+  setDoubleSidedSetupSS: (arg: number) => void;
+  setSingleSidedSetupCS: (arg: number) => void;
+  setDoubleSidedSetupCS: (arg: number) => void;
+  setSingleSidedSetupTP: (arg: number) => void;
+  setDoubleSidedSetupTP: (arg: number) => void;
   setSingleSidedPrint: (arg: number) => void;
   setDoubleSidedPrint: (arg: number) => void;
   setShippingFee: (arg: number) => void;
@@ -34,6 +46,12 @@ const createPriceCalculationSlice: StateCreator<
   ballCost: 0,
   singleSidedSetup: 0,
   doubleSidedSetup: 0,
+  singleSidedSetupSS: 0,
+  doubleSidedSetupSS: 0,
+  singleSidedSetupCS: 0,
+  doubleSidedSetupCS: 0,
+  singleSidedSetupTP: 0,
+  doubleSidedSetupTP: 0,
   singleSidedPrint: 0,
   doubleSidedPrint: 0,
   shippingFee: 0,
@@ -85,15 +103,40 @@ const createPriceCalculationSlice: StateCreator<
   clearTotalPrice: () =>
     set((state) => ({ totalPrice: 0, initialTotalPrice: 0 })),
   setBallCost: (cost: number) => set((state) => ({ ballCost: cost })),
-  setSingleSidedSetup: (cost: number) =>
-    set((state) => ({ singleSidedSetup: cost })),
-  setDoubleSidedSetup: (cost: number) =>
-    set((state) => ({ doubleSidedSetup: cost })),
   setSingleSidedPrint: (cost: number) =>
     set((state) => ({ singleSidedPrint: cost })),
   setDoubleSidedPrint: (cost: number) =>
     set((state) => ({ doubleSidedPrint: cost })),
   setShippingFee: (cost: number) => set((state) => ({ shippingFee: cost })),
+
+  setSingleSidedSetup: (cost: number) =>
+    set((state) => ({
+      singleSidedSetup:
+        state.ballType != "StarStrike" ? state.singleSidedSetupCS : cost,
+    })),
+  setDoubleSidedSetup: (cost: number) =>
+    set((state) => ({
+      doubleSidedSetup:
+        state.ballType != "StarStrike" ? state.doubleSidedSetupCS : cost,
+    })),
+
+  //StarStrike
+  setSingleSidedSetupSS: (cost: number) =>
+    set((state) => ({ singleSidedSetupSS: cost })),
+  setDoubleSidedSetupSS: (cost: number) =>
+    set((state) => ({ doubleSidedSetupSS: cost })),
+
+  //Callaway SuperSoft
+  setSingleSidedSetupCS: (cost: number) =>
+    set((state) => ({ singleSidedSetupCS: cost })),
+  setDoubleSidedSetupCS: (cost: number) =>
+    set((state) => ({ doubleSidedSetupCS: cost })),
+
+  //Titleist Pro V1
+  setSingleSidedSetupTP: (cost: number) =>
+    set((state) => ({ singleSidedSetupTP: cost })),
+  setDoubleSidedSetupTP: (cost: number) =>
+    set((state) => ({ doubleSidedSetupTP: cost })),
 });
 
 export default createPriceCalculationSlice;
