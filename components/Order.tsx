@@ -29,6 +29,9 @@ interface OrderProps {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
+const SINGLE_SIDED_FEE = 40;
+const DOUBLE_SIDED_FEE = 60;
+
 const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
   const quantity = useBoundStore((state) => state.quantity);
@@ -36,21 +39,18 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const ballType = useBoundStore((state) => state.ballType);
+  const singleSidedSetupSS = useBoundStore((state) => state.singleSidedSetupSS);
+  const doubleSidedSetupSS = useBoundStore((state) => state.doubleSidedSetupSS);
   const setBallType = useBoundStore((state) => state.setBallType);
+  const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
+  const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
+  const setBallCost = useBoundStore((state) => state.setBallCost);
+  const setShippingFee = useBoundStore((state) => state.setShippingFee);
   const clearFrontSideImage = useBoundStore(
     (state) => state.clearFrontSideImage
   );
-  const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
   const setInitialTotalPrice = useBoundStore(
     (state) => state.setInitialTotalPrice
-  );
-  const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
-  const setBallCost = useBoundStore((state) => state.setBallCost);
-  const setSingleSidedSetup = useBoundStore(
-    (state) => state.setSingleSidedSetup
-  );
-  const setDoubleSidedSetup = useBoundStore(
-    (state) => state.setDoubleSidedSetup
   );
   const setSingleSidedPrint = useBoundStore(
     (state) => state.setSingleSidedPrint
@@ -58,7 +58,34 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setDoubleSidedPrint = useBoundStore(
     (state) => state.setDoubleSidedPrint
   );
-  const setShippingFee = useBoundStore((state) => state.setShippingFee);
+
+  const setSingleSidedSetup = useBoundStore(
+    (state) => state.setSingleSidedSetup
+  );
+  const setDoubleSidedSetup = useBoundStore(
+    (state) => state.setDoubleSidedSetup
+  );
+  //StarStrike
+  const setSingleSidedSetupSS = useBoundStore(
+    (state) => state.setSingleSidedSetupSS
+  );
+  const setDoubleSidedSetupSS = useBoundStore(
+    (state) => state.setDoubleSidedSetupSS
+  );
+  //Callaway SuperSoft
+  const setSingleSidedSetupCS = useBoundStore(
+    (state) => state.setSingleSidedSetupCS
+  );
+  const setDoubleSidedSetupCS = useBoundStore(
+    (state) => state.setDoubleSidedSetupCS
+  );
+  //Titleist Pro
+  const setSingleSidedSetupTP = useBoundStore(
+    (state) => state.setSingleSidedSetupTP
+  );
+  const setDoubleSidedSetupTP = useBoundStore(
+    (state) => state.setDoubleSidedSetupTP
+  );
 
   const isMobileView = useBreakpointValue({
     base: true,
@@ -75,16 +102,21 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     const getPrices = async () => {
       const response = await API("GET", "create-payment-intent");
 
+      setSingleSidedSetupCS(SINGLE_SIDED_FEE);
+      setDoubleSidedSetupCS(DOUBLE_SIDED_FEE);
+      setSingleSidedSetupTP(SINGLE_SIDED_FEE);
+      setDoubleSidedSetupTP(DOUBLE_SIDED_FEE);
+
       response.priceList.map((price: any) => {
         switch (price.name) {
           case "BALL_COST":
             setBallCost(price.price);
             break;
           case "SINGLE_SIDED_SETUP":
-            setSingleSidedSetup(price.price || 0);
+            setSingleSidedSetupSS(price.price || 0)
             break;
           case "DOUBLE_SIDED_SETUP":
-            setDoubleSidedSetup(price.price || 0);
+            setDoubleSidedSetupSS(price.price || 0);
             break;
           case "SINGLE_SIDED_PRINT":
             setSingleSidedPrint(price.price || 0);
@@ -110,7 +142,11 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "package",
     defaultValue: ballType || "StarStrike",
-    onChange: (value) => setBallType(value),
+    onChange: (value) => {
+      setBallType(value),
+        setSingleSidedSetup(singleSidedSetupSS),
+        setDoubleSidedSetup(doubleSidedSetupSS);
+    },
   });
 
   const group = getRootProps();
@@ -121,7 +157,10 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const handleSlideChange = (swiper: any) => {
     setCurrentSlideIndex(swiper.activeIndex);
     const selectedOption = options[swiper.activeIndex];
+
     setBallType(selectedOption);
+    setSingleSidedSetup(singleSidedSetupSS),
+    setDoubleSidedSetup(doubleSidedSetupSS);
   };
 
   const initialSlide = (ballType: string) => {
@@ -169,15 +208,17 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
         <Flex textAlign={"center"} mb={10}>
           <Swiper
             onSlideChange={handleSlideChange}
-            initialSlide= {initialSlide(ballType)}
+            initialSlide={initialSlide(ballType)}
           >
             {options.map((value, index) => {
               const radio = getRadioProps({ value });
               return (
                 <SwiperSlide key={value}>
-                    <Flex justifyContent={"center"}>
-                      <Card {...radio} isActive={index === currentSlideIndex}>{value}</Card>
-                    </Flex>
+                  <Flex justifyContent={"center"}>
+                    <Card {...radio} isActive={index === currentSlideIndex}>
+                      {value}
+                    </Card>
+                  </Flex>
                 </SwiperSlide>
               );
             })}
@@ -198,7 +239,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
 
       <Stack mb={10} alignItems={"center"}>
         <Text fontSize={"xl"} fontWeight={"bold"}>
-          StarStrike Golf Balls
+          {ballType} Golf Balls
         </Text>
         <PreviewImage />
       </Stack>

@@ -13,6 +13,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const ballQuantity = useBoundStore((state) => state.quantity);
   const totalPrice = useBoundStore((state) => state.totalPrice);
+  const ballType = useBoundStore((state) => state.ballType);
 
   return (
     <Stack my={10} alignItems={"center"}>
@@ -42,7 +43,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
         </Stack>
         <VStack flex={1.5} alignItems={{ base: 'center',sm: "flex-start"}} fontSize={"md"}>
           <Text fontWeight={"bold"}>Order Details:</Text>
-          <Text>{ballQuantity}x StarStrike Golf Balls</Text>
+          <Text>{ballQuantity}x {ballType} Golf Balls</Text>
           {isDoubleSided ? (
             <Text>Double sided print</Text>
           ) : (
