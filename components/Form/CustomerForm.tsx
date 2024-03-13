@@ -7,6 +7,8 @@ import {
   FormControl,
   FormErrorMessage,
   Input,
+  Select,
+  Box,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import FormInput from "../UI/FormInput";
@@ -16,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import PrimaryButton from "../UI/PrimaryButton";
 import { HiChevronRight } from "react-icons/hi";
 import useBoundStore from "@/store/boundStore";
+import { COUNTRY, PROVINCE } from "@/utils/data";
 
 export type CustomerFormValues = {
   firstName: string;
@@ -85,6 +88,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
   const setCountry = useBoundStore((state) => state.setCountry);
   const setShippingDetails = useBoundStore((state) => state.setShippingDetails);
   const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
+  const setGrandTotal = useBoundStore((state) => state.setGrandTotal);
 
 
   const {
@@ -111,7 +115,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
     setValue("zipCode", zipCode);
     setValue("country", country);
     setValue("shippingDetails", shippingDetails);
-    setFocus('firstName')
+    setFocus("firstName");
   }, []);
 
   const handleOnSubmit: SubmitHandler<CustomerFormValues> = async (data) => {
@@ -126,7 +130,8 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
     setZipCode(data.zipCode);
     setCountry(data.country);
     setShippingDetails(data.shippingDetails);
-    setTotalPrice()
+    setTotalPrice();
+    setGrandTotal();
     setActiveStep(activeStep + 1);
   };
 
@@ -174,12 +179,18 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
         <Text fontSize={"xl"} fontWeight={"bold"} mb={6}>
           Shipping details
         </Text>
-        <RadioGroup defaultValue={shippingDetails}>
+        <RadioGroup
+          defaultValue={shippingDetails}
+          onChange={(data) => {
+            setShippingDetails(data);
+            setTotalPrice(), setGrandTotal();
+          }}
+        >
           <Flex
             justifyContent={"space-between"}
-            w={{base: "20rem", sm: "40rem"}}
+            w={{ base: "20rem", sm: "40rem" }}
             flexDir={{ base: "column", sm: "row" }}
-            alignItems={'center'}
+            alignItems={"center"}
           >
             <Radio
               size={"xl"}
@@ -187,19 +198,19 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
               value="Flat Rate"
               {...register("shippingDetails")}
               isInvalid={!!errors?.shippingDetails}
-              w={{base: '20rem', sm: '18rem'}}
-              >
+              w={{ base: "20rem", sm: "18rem" }}
+            >
               <Text fontSize={"md"} fontWeight={"bold"}>
                 Flat Rate Shipping
               </Text>
-              <Text fontSize={"sm"}>${shippingFee}</Text>
+              <Text fontSize={"sm"}>${shippingFee.toFixed(2)}</Text>
             </Radio>
             <Radio
               size={"xl"}
               value="Pick-up"
               {...register("shippingDetails")}
               isInvalid={!!errors?.shippingDetails}
-              w={{base: '20rem', sm: '18rem'}}
+              w={{ base: "20rem", sm: "18rem" }}
             >
               <Text fontSize={"md"} fontWeight={"bold"}>
                 Local Pick-Up (Free)
@@ -241,23 +252,70 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
             register={register}
           />
           <FormInput
-            id={"province"}
-            placeholder="Province / State"
-            isInvalid={!!errors?.province}
-            register={register}
-          />
-          <FormInput
             id={"zipCode"}
             placeholder="Postal Code / ZIP"
             isInvalid={!!errors?.zipCode}
             register={register}
           />
-          <FormInput
-            id={"country"}
-            placeholder="Country"
-            isInvalid={!!errors?.country}
-            register={register}
-          />
+
+          <Box
+            w={{ base: "20rem", sm: "18rem" }}
+            color={"text-secondary"}
+            borderRadius={"1rem"}
+            bg={"surface-background-input"}
+            _hover={{ bg: "surface-hover-alpha-20" }}
+          >
+            <Select
+              id={"province"}
+              borderRadius={"1rem"}
+              placeholder="Province / State"
+              _placeholder={{ opacity: 1, color: "red" }}
+              isInvalid={!!errors?.province}
+              {...register("province")}
+              onChange={(e) => {
+                const selectedProvince = PROVINCE.find(
+                  (province) => province.name === e.target.value
+                );
+                if (selectedProvince) {
+                  setValue("country", selectedProvince.country);
+                  setProvince(selectedProvince.name);
+                  setCountry(selectedProvince.country);
+                  setTotalPrice(), setGrandTotal();
+                }
+              }}
+            >
+              {PROVINCE.map((province) => (
+                <option key={province.abbreviation} value={province.name}>
+                  {province.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+
+          <Box
+            w={{ base: "20rem", sm: "18rem" }}
+            color={"text-secondary"}
+            borderRadius={"1rem"}
+            bg={"surface-background-input"}
+            _hover={{ bg: "surface-hover-alpha-20" }}
+          >
+            <Select
+              id={"country"}
+              placeholder="Country"
+              borderRadius={"1rem"}
+              isInvalid={!!errors?.country}
+              {...register("country")}
+              _disabled={{color: "text-secondary"}}
+              disabled
+              cursor={'not-allowed'}
+            >
+              {COUNTRY.map((country) => (
+                <option key={country.abbreviation} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
         </Flex>
       </Stack>
 

@@ -44,6 +44,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setBallType = useBoundStore((state) => state.setBallType);
   const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
   const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
+  const setGrandTotal = useBoundStore((state) => state.setGrandTotal);
   const setBallCost = useBoundStore((state) => state.setBallCost);
   const setShippingFee = useBoundStore((state) => state.setShippingFee);
   const clearFrontSideImage = useBoundStore(
@@ -96,6 +97,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     setIsDoubleSided(!isDoubleSided);
     setTotalPrice();
     setInitialTotalPrice();
+    setGrandTotal();
   };
 
   useEffect(() => {

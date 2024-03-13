@@ -14,22 +14,25 @@ const QuantityInput = () => {
   const incrementQty = useBoundStore((state) => state.increment);
   const decrementQty = useBoundStore((state) => state.decrement);
   const setQuantity = useBoundStore((state) => state.setQuantity);
-  const setInitialTotalPrice = useBoundStore((state) => state.setInitialTotalPrice);
+  const setInitialTotalPrice = useBoundStore(
+    (state) => state.setInitialTotalPrice
+  );
   const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
-
+  const setGrandTotal = useBoundStore((state) => state.setGrandTotal);
 
   const handleInputQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuantity = parseInt(e.target.value, 10);
     setQuantity(isNaN(newQuantity) ? 0 : newQuantity);
     setInitialTotalPrice();
-    setTotalPrice()
+    setTotalPrice();
+    setGrandTotal();
   };
 
   const handleIncreaseQuantity = () => {
-    incrementQty(), setInitialTotalPrice(), setTotalPrice();
+    incrementQty(), setInitialTotalPrice(), setTotalPrice(), setGrandTotal();
   };
   const handleDecreaseQuantity = () => {
-    decrementQty(), setInitialTotalPrice(), setTotalPrice();
+    decrementQty(), setInitialTotalPrice(), setTotalPrice(), setGrandTotal();
   };
 
   return (

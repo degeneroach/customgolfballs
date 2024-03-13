@@ -3,6 +3,10 @@ import { BallQuantity } from "./ballQuantitySlice";
 import { UploadImage } from "./uploadImageSlice";
 import { CustomerDetails } from "./customerDetailsSlice";
 
+//TAX
+export const GST = 0.05;
+export const PST = 0.07;
+
 export interface PriceCalculation {
   totalPrice: number;
   initialTotalPrice: number;
@@ -18,6 +22,8 @@ export interface PriceCalculation {
   singleSidedSetupTP: number;
   doubleSidedSetupTP: number;
   shippingFee: number;
+  grandTotal: number;
+  setGrandTotal: () => void;
   setTotalPrice: () => void;
   setInitialTotalPrice: () => void;
   clearTotalPrice: () => void;
@@ -55,9 +61,27 @@ const createPriceCalculationSlice: StateCreator<
   singleSidedPrint: 0,
   doubleSidedPrint: 0,
   shippingFee: 0,
+  grandTotal: 0,
+  setGrandTotal: () =>
+    set((state) => {
+      let psTax = PST;
+      let gsTax = GST;
+
+      if (!state.province.match(/^british columbia$/i)) psTax = 0;
+      if (state.country.match(/^united states$/i)) gsTax = 0;
+
+      return {
+        grandTotal: state.totalPrice * (1 + gsTax + psTax),
+      };
+
+    }),
   setTotalPrice: () =>
     set((state: any) => {
-      let ballPrice;
+      let shippingFee: number = 0;
+      let ballPrice: number;
+      let totalPrice: number;
+
+      //Ball Price
       if (state.ballType === "Callaway SuperSoft") {
         ballPrice = 34.99 / 12;
       } else if (state.ballType === "Titleist Pro V1") {
@@ -66,21 +90,36 @@ const createPriceCalculationSlice: StateCreator<
         ballPrice = state.ballCost || 2;
       }
 
+      //Shipping
+      if (state.shippingDetails === "Flat Rate") {
+        shippingFee = state.shippingFee;
+      }
+
+      //Total Price
+      if (state.isDoubleSided) {
+        totalPrice =
+          ballPrice * state.quantity +
+          state.doubleSidedPrint * state.quantity +
+          state.doubleSidedSetup +
+          shippingFee;
+      } else {
+        totalPrice =
+          ballPrice * state.quantity +
+          state.singleSidedPrint * state.quantity +
+          state.singleSidedSetup +
+          shippingFee;
+      }
+
       return {
-        totalPrice: state.isDoubleSided
-          ? ballPrice * state.quantity +
-            state.doubleSidedPrint * state.quantity +
-            state.doubleSidedSetup +
-            (state.shippingDetails === "Flat Rate" ? state.shippingFee : 0)
-          : state.ballCost * state.quantity +
-            state.singleSidedPrint * state.quantity +
-            state.singleSidedSetup +
-            (state.shippingDetails === "Flat Rate" ? state.shippingFee : 0),
+        totalPrice,
       };
     }),
   setInitialTotalPrice: () =>
     set((state: any) => {
-      let ballPrice;
+      let ballPrice: number;
+      let initialTotalPrice: number;
+
+      //Ball Price
       if (state.ballType === "Callaway SuperSoft") {
         ballPrice = 34.99 / 12;
       } else if (state.ballType === "Titleist Pro V1") {
@@ -89,19 +128,26 @@ const createPriceCalculationSlice: StateCreator<
         ballPrice = state.ballCost || 2;
       }
 
+      //Initial Total Price
+      if (state.isDoubleSided) {
+        initialTotalPrice =
+          ballPrice * state.quantity +
+          state.doubleSidedPrint * state.quantity +
+          state.doubleSidedSetup;
+      } else {
+        initialTotalPrice =
+          ballPrice * state.quantity +
+          state.singleSidedPrint * state.quantity +
+          state.singleSidedSetup;
+      }
+
       return {
         ballCost: ballPrice,
-        initialTotalPrice: state.isDoubleSided
-          ? ballPrice * state.quantity +
-            state.doubleSidedPrint * state.quantity +
-            state.doubleSidedSetup
-          : ballPrice * state.quantity +
-            state.singleSidedPrint * state.quantity +
-            state.singleSidedSetup,
+        initialTotalPrice,
       };
     }),
   clearTotalPrice: () =>
-    set((state) => ({ totalPrice: 0, initialTotalPrice: 0 })),
+    set((state) => ({ totalPrice: 0, initialTotalPrice: 0, grandTotal: 0 })),
   setBallCost: (cost: number) => set((state) => ({ ballCost: cost })),
   setSingleSidedPrint: (cost: number) =>
     set((state) => ({ singleSidedPrint: cost })),

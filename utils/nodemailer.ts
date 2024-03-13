@@ -12,6 +12,8 @@ type EmailPayload = {
   province: string;
   zipCode: string;
   country: string;
+  phoneNumber: string;
+  email: string;
   totalPrice: number;
   firstName: string;
   lastName: string;
@@ -31,6 +33,8 @@ export async function sendMail({
   province,
   zipCode,
   country,
+  phoneNumber,
+  email,
   totalPrice,
   firstName,
   lastName,
@@ -49,7 +53,7 @@ export async function sendMail({
 
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
-    to: "hello@customgolfballprinting.com",
+    to: "hello@customgolfballprinting.com",   
     subject: "New Order Notification",
     html: `
     <body>
@@ -57,6 +61,8 @@ export async function sendMail({
       <ul>
         <li><strong>Order ID:</strong> ${orderId}</li>
         <li><strong>Customer Name:</strong> ${firstName} ${lastName}</li>
+        <li><strong>Email:</strong> ${email}</li>
+        <li><strong>Contact Number:</strong> ${phoneNumber}</li>
         <li><strong>Payment Amount:</strong> $${totalPrice.toFixed(2)}</li>
         <li><strong>Ball Type:</strong> ${ballType}</li>
         <li><strong>Quantity:</strong> ${quantity}</li>
