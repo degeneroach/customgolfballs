@@ -1,9 +1,13 @@
 import React from "react";
 import { Box, Text, chakra, useRadio, Image, Flex } from "@chakra-ui/react";
 import { HiCheckCircle, HiOutlineCheckCircle } from "react-icons/hi";
+import useBoundStore from "@/store/boundStore";
 
 const Card: React.FC<any> = (props) => {
   const { getInputProps, getRadioProps } = useRadio(props);
+  const ballCostSS = useBoundStore((state) => state.ballCostSS);
+  const ballCostCS = useBoundStore((state) => state.ballCostCS);
+  const ballCostTP = useBoundStore((state) => state.ballCostTP);
 
   const input = getInputProps();
   const checkbox = getRadioProps();
@@ -11,19 +15,19 @@ const Card: React.FC<any> = (props) => {
   const cardData = [
     {
       name: "StarStrike",
-      price: "$2.00 / Per Ball",
+      price: `$${ballCostSS} / Per Ball`,
       description: "No MOQ - Purchase in increments of 1 ball.",
       img: "../images/StarStrike.svg",
     },
     {
       name: "Callaway SuperSoft",
-      price: "$34.99 / Dozen",
+      price: `$${ballCostCS} / Dozen`,
       description: "Purchase in increments of 12",
       img: "../images/Callaway SuperSoft.svg",
     },
     {
       name: "Titleist Pro V1",
-      price: "$72.99 / Dozen",
+      price: `$${ballCostTP} / Dozen`,
       description: "Purchase in increments of 12",
       img: "../images/Titleist Pro V1.svg",
     },

@@ -2,13 +2,15 @@ import React from "react";
 import PrintImage from "./PrintImage";
 import { Flex, Stack, Text, VStack, chakra } from "@chakra-ui/react";
 import useBoundStore from "@/store/boundStore";
-import { GST, PST } from "@/store/priceCalculationSlice";
+// import { GST, PST } from "@/store/priceCalculationSlice";
 
 interface OrderSummaryProps {
   title: string;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
+  const taxGST = useBoundStore((state) => state.taxGST);
+  const taxPST = useBoundStore((state) => state.taxPST);
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
@@ -68,12 +70,12 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ title }) => {
           </Text>
           {hasGST && (
             <Text>
-              GST: <chakra.span>${(totalPrice * GST).toFixed(2)}</chakra.span>
+              GST: <chakra.span>${(totalPrice * taxGST).toFixed(2)}</chakra.span>
             </Text>
           )}
           {hasPST && (
             <Text>
-              PST: <chakra.span>${(totalPrice * PST).toFixed(2)}</chakra.span>
+              PST: <chakra.span>${(totalPrice * taxPST).toFixed(2)}</chakra.span>
             </Text>
           )}
           <Text fontSize={"xl"} fontWeight={"bold"}>

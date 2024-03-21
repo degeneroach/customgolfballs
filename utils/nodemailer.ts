@@ -15,6 +15,7 @@ type EmailPayload = {
   phoneNumber: string;
   email: string;
   totalPrice: number;
+  grandTotal: number;
   firstName: string;
   lastName: string;
   shippingDetails: string
@@ -36,6 +37,7 @@ export async function sendMail({
   phoneNumber,
   email,
   totalPrice,
+  grandTotal,
   firstName,
   lastName,
   shippingDetails,
@@ -63,7 +65,7 @@ export async function sendMail({
         <li><strong>Customer Name:</strong> ${firstName} ${lastName}</li>
         <li><strong>Email:</strong> ${email}</li>
         <li><strong>Contact Number:</strong> ${phoneNumber}</li>
-        <li><strong>Payment Amount:</strong> $${totalPrice.toFixed(2)}</li>
+        <li><strong>Payment Amount:</strong> $${grandTotal.toFixed(2)}</li>
         <li><strong>Ball Type:</strong> ${ballType}</li>
         <li><strong>Quantity:</strong> ${quantity}</li>
         <li><strong>Pick-up or Shipping:</strong> ${shippingDetails}</li>

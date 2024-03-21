@@ -20,7 +20,6 @@ import useBoundStore from "@/store/boundStore";
 import PreviewImage from "./PreviewImage";
 import API from "@/utils/axios";
 import Card from "./Card";
-import MySwiper from "./Swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -29,23 +28,21 @@ interface OrderProps {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const SINGLE_SIDED_FEE = 40;
-const DOUBLE_SIDED_FEE = 60;
-
 const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
   const quantity = useBoundStore((state) => state.quantity);
-  const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const ballType = useBoundStore((state) => state.ballType);
   const singleSidedSetupSS = useBoundStore((state) => state.singleSidedSetupSS);
   const doubleSidedSetupSS = useBoundStore((state) => state.doubleSidedSetupSS);
+  const setTaxPST = useBoundStore((state) => state.setTaxPST);
+  const setTaxGst = useBoundStore((state) => state.setTaxGST);
+  const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
   const setBallType = useBoundStore((state) => state.setBallType);
   const clearBackSideImage = useBoundStore((state) => state.clearBackSideImage);
   const setTotalPrice = useBoundStore((state) => state.setTotalPrice);
   const setGrandTotal = useBoundStore((state) => state.setGrandTotal);
-  const setBallCost = useBoundStore((state) => state.setBallCost);
   const setShippingFee = useBoundStore((state) => state.setShippingFee);
   const clearFrontSideImage = useBoundStore(
     (state) => state.clearFrontSideImage
@@ -59,13 +56,18 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setDoubleSidedPrint = useBoundStore(
     (state) => state.setDoubleSidedPrint
   );
-
   const setSingleSidedSetup = useBoundStore(
     (state) => state.setSingleSidedSetup
   );
   const setDoubleSidedSetup = useBoundStore(
     (state) => state.setDoubleSidedSetup
   );
+
+  //Ball Cost
+  const setBallCostSS = useBoundStore((state) => state.setBallCostSS);
+  const setBallCostCS = useBoundStore((state) => state.setBallCostCS);
+  const setBallCostTP = useBoundStore((state) => state.setBallCostTP);
+
   //StarStrike
   const setSingleSidedSetupSS = useBoundStore(
     (state) => state.setSingleSidedSetupSS
@@ -104,15 +106,16 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     const getPrices = async () => {
       const response = await API("GET", "create-payment-intent");
 
-      setSingleSidedSetupCS(SINGLE_SIDED_FEE);
-      setDoubleSidedSetupCS(DOUBLE_SIDED_FEE);
-      setSingleSidedSetupTP(SINGLE_SIDED_FEE);
-      setDoubleSidedSetupTP(DOUBLE_SIDED_FEE);
-
       response.priceList.map((price: any) => {
         switch (price.name) {
           case "BALL_COST":
-            setBallCost(price.price);
+            setBallCostSS(price.price);
+            break;
+          case "BALL_COST_CS":
+            setBallCostCS(price.price);
+            break;
+          case "BALL_COST_TP":
+            setBallCostTP(price.price);
             break;
           case "SINGLE_SIDED_SETUP":
             setSingleSidedSetupSS(price.price || 0)
@@ -126,9 +129,27 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
           case "DOUBLE_SIDED_PRINT":
             setDoubleSidedPrint(price.price || 0);
             break;
+          case "SINGLE_SIDED_SETUP_CS":
+            setSingleSidedSetupCS(price.price || 0)
+            break;
+          case "DOUBLE_SIDED_SETUP_CS":
+            setDoubleSidedSetupCS(price.price || 0);
+            break;
+          case "SINGLE_SIDED_SETUP_TP":
+              setSingleSidedSetupTP(price.price || 0)
+            break;
+          case "DOUBLE_SIDED_SETUP_TP":
+            setDoubleSidedSetupTP(price.price || 0);
+            break;
           case "SHIPPING_FEE":
             setShippingFee(price.price || 0);
             break;
+          case "TAX_GST":
+              setTaxGst(price.price || 0);
+              break;
+          case "TAX_PST":
+              setTaxPST(price.price || 0);
+              break;
           default:
             break;
         }
