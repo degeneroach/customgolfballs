@@ -1,3 +1,4 @@
+import { sendMail } from "@/utils/nodemailer";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
@@ -11,94 +12,66 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     const data = await req.body;
+    
     const {
-      name,
-      email,
-      phoneNumber,
-      streetAddress,
+      paymentIntent: paymentIntentId,
+      arrayImageUrl,
+      quantity,
+      ballType,
+      isDoubleSided,
+      orderId,
       unit,
+      streetAddress,
       city,
       province,
       zipCode,
       country,
-      shippingDetails,
-      totalPrice
+      phoneNumber,
+      email,
+      totalPrice,
+      grandTotal,
+      firstName,
+      lastName,
+      shippingDetails
     } = data;
 
-    //Check if the customer is exist then get the customerId else create customer.
-    const getCustomer = await stripe.customers.search({
-      query: `name:\'${name}\' AND email:\'${email}\'`,
-    });
-
-    let customerId;
-    if (getCustomer.data.length === 0 || getCustomer.data === null) {
-      const customer = await stripe.customers.create({
-        email,
-        name,
-        phone: phoneNumber,
-        address: {
-          city,
-          country,
-          line1: unit,
-          line2: streetAddress,
-          postal_code: zipCode,
-          state: province,
-        },
-      });
-      customerId = customer.id;
-    } else {
-      customerId = getCustomer.data[0].id;
-    }
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalPrice * 100,
-      currency: "CAD",
-      customer: customerId,
+    const paymentIntent = await stripe.paymentIntents.update(paymentIntentId, {
       metadata: {
-        "Shipping Details": shippingDetails,
+        "Front Side Image": arrayImageUrl[0],
+        "Back Side Image": arrayImageUrl[1],
+        "Double Sided": isDoubleSided,
+        "Quantity": quantity,
+        "Ball Type": ballType
       },
-      shipping: {
-        address: {
-          city,
-          country,
-          line1: unit,
-          line2: streetAddress,
-          postal_code: zipCode,
-          state: province,
-        },
-        name,
-        phone: phoneNumber,
-      },
-      receipt_email: email
     });
+
+    const sendEmailPayload = {
+      frontSideImage: arrayImageUrl[0],
+      backSideImage: arrayImageUrl[1],
+      ballType,
+      isDoubleSided,
+      orderId,
+      unit,
+      streetAddress,
+      city,
+      province,
+      zipCode,
+      country,
+      phoneNumber,
+      email,
+      totalPrice,
+      grandTotal,
+      firstName,
+      lastName,
+      shippingDetails,
+      quantity
+    };
+
+    await sendMail(sendEmailPayload);
 
     res.status(200).json({
       clientSecret: paymentIntent.client_secret,
-      paymentIntent: paymentIntent,
-      status: paymentIntent.status
-    });
-  }
-
-  if (req.method == "GET") {
-    const products = await stripe.products.list({
-      limit: 20,
-    });
-
-    let data: { name: string; price: number | null }[] = [];
-
-    await Promise.all(products.data.map(async (product) => {
-      const price = await stripe.prices.search({
-        query: `product:\'${product.id}\'`,
-      });
-
-      data.push({
-        name: product.name,
-        price: (price.data[0].unit_amount || 0) / 100,
-      });
-    }));
-
-    res.status(200).json({
-      priceList: data,
+      paymentIntent: paymentIntent.id,
     });
   }
 }

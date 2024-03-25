@@ -24,6 +24,7 @@ const CheckoutForm: React.FC<{
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const totalPrice = useBoundStore((state) => state.totalPrice);
+  const grandTotal = useBoundStore((state) => state.grandTotal);
   const quantity = useBoundStore((state) => state.quantity);
   const ballType = useBoundStore((state) => state.ballType);
   const isDoubleSided = useBoundStore((state) => state.isDoubleSided);
@@ -33,6 +34,8 @@ const CheckoutForm: React.FC<{
   const province = useBoundStore((state) => state.province);
   const zipCode = useBoundStore((state) => state.zipCode);
   const country = useBoundStore((state) => state.country);
+  const phoneNumber = useBoundStore((state) => state.phoneNumber);
+  const email = useBoundStore((state) => state.email);
   const firstName = useBoundStore((state) => state.firstName);
   const lastName = useBoundStore((state) => state.lastName);
   const shippingDetails = useBoundStore((state) => state.shippingDetails);
@@ -86,7 +89,10 @@ const CheckoutForm: React.FC<{
         province,
         zipCode,
         country,
+        phoneNumber,
+        email,
         totalPrice,
+        grandTotal,
         firstName,
         lastName,
         shippingDetails
