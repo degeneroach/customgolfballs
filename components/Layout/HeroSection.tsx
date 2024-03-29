@@ -3,6 +3,9 @@ import {
   chakra,
   Text,
   Image,
+  Heading,
+  UnorderedList,
+  ListItem,
   useBreakpointValue,
   IconButton,
   Stack,
@@ -44,37 +47,47 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         justifyContent="center"
         textColor={"text-primary"}
       >
-        <Text
+        <Heading
           fontWeight={400}
           fontSize={"5xl"}
+          as='h1'
           mb={6}
           textAlign={{ base: "center", md: "inherit" }}
         >
-          Personalize your golf balls with{" "}
-          <chakra.span fontWeight={"bold"}>custom printing</chakra.span>
-        </Text>
+          Custom Golf Balls{" "}
+          <chakra.span fontWeight={"bold"}>Personalized Logo Golf Balls</chakra.span>
+        </Heading>
         <Text
           fontWeight={400}
           fontSize={"sm"}
           mb={4}
           textAlign={{ base: "center", md: "inherit" }}
         >
-          We are located in the heart of Vancouver, at 3200 E Broadway, Bay 1,
-          Custom Golf Ball Printing is your one-stop destination for bespoke,
-          creative, and personalized golf ball designs. With a decade`s worth of
-          experience in the industry, we take pride in amplifying your golfing
-          experience through our unique, innovative, and customer-oriented
-          services.
+          We are located in the heart of Vancouver, at 3200 E Broadway, Bay 1,{" "} 
+          <strong>Custom Golf Ball Printing</strong> is your one-stop destination for bespoke,
+          creative, and <em>personalized golf ball designs</em>. With a decade&apos;s worth of
+          experience in the print industry, we take pride in amplifying your <strong>custom golf gear</strong> through our unique, innovative, and industry leading techniques. Whether you&apos;re looking for funny golf gifts or corproate logo gift ideas we&apos;ll make sure it&apos;s the <em>best quality print with our Mimaki UJF 6042 MkII e</em>.
         </Text>
+        <Heading
+        fontWeight={700}
+        fontSize={"md"}
+        as='h2'
+        mb={6}
+        textAlign={{ base: "center", md: "inherit" }}>Custom Golf Ball Printing Ideas:</Heading>
+        <UnorderedList style={{marginBottom: `25px`}}>
+            <ListItem>Corporate Golf Tournaments</ListItem>
+            <ListItem>Custom Titleist Golf Balls</ListItem>
+            <ListItem>Custom Callaway Golf Balls</ListItem>
+            <ListItem>Custom Golf Balls with Picture</ListItem>
+            <ListItem>Funny Custom Golf Balls</ListItem>
+        </UnorderedList>
         <Text
           fontWeight={400}
           fontSize={"sm"}
           mb={8}
           textAlign={{ base: "center", md: "inherit" }}
         >
-          Whether it`s a corporate event, a golfing tournament, a gift, or a
-          personal set, we have you covered for any & all your custom golf ball
-          printing.
+          We&apos;ve created one of the easiest ways to order custom golf balls with logos online! If you have any questions about our ordering platform please contact us at (604) 600-4347 or email us at <Link style={{textDecoration:`underline`}} href="mailto:hello@customgolfballprinting.com">hello@customgolfballprinting.com</Link>. We have a detailed <Link style={{textDecoration:`underline`}} href="faq">FAQ page</Link> for any questions you might have. Our <strong>turn around is 5 - 7 business days</strong> but with the proper notice we can have them done with 1 - 3 days. Visit our office from Monday - Friday from 10AM - 5PM in Vancouver, BC just off Broadway and Rupert.
         </Text>
         <PrimaryButton
           leftIcon={<HiOutlinePencil />}
@@ -82,7 +95,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           alignSelf={{ base: "center", md: "inherit" }}
           onClick={onOpenOrderModal}
         >
-          Customize your balls
+          Customize Golf Balls Online
         </PrimaryButton>
       </Flex>
 

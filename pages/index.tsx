@@ -20,11 +20,11 @@ const Homepage = () => {
     <>
       <Head>
         <title>
-          Custom Golf Balls | Personalized Golf Balls Printed In Van
+          Custom Golf Balls | Personalized Golf Balls With Pictures
         </title>
         <meta
           name="description"
-          content="Expert in custom golf ball printing for tournaments, gifts, & personal sets. Get creative, personalized golf balls at 3200 E Broadway, Vancouver."
+          content="Custom golf ball printing for golf tournaments, custom golf gifts, & funny printed golf balls. Fast turn-around with personalized golf balls done in Vancouver."
         />
       </Head>
       <Container
