@@ -63,7 +63,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           mb={4}
           textAlign={{ base: "center", md: "inherit" }}
         >
-          We are located in the heart of Vancouver, at 3200 E Broadway, Bay 1,{" "} 
+          Golf Ball Printing in Vancouver, at 3200 E Broadway, Bay 1,{" "} 
           <strong>Custom Golf Ball Printing</strong> is your one-stop destination for bespoke,
           creative, and <em>personalized golf ball designs</em>. With a decade&apos;s worth of
           experience in the print industry, we take pride in amplifying your <strong>custom golf gear</strong> through our unique, innovative, and industry leading techniques. Whether you&apos;re looking for funny golf gifts or corproate logo gift ideas we&apos;ll make sure it&apos;s the <em>best quality print with our Mimaki UJF 6042 MkII e</em>.
@@ -80,6 +80,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <ListItem>Custom Callaway Golf Balls</ListItem>
             <ListItem>Custom Golf Balls with Picture</ListItem>
             <ListItem>Funny Custom Golf Balls</ListItem>
+            <ListItem>Faces, Dates, Weddings, and more!</ListItem>
         </UnorderedList>
         <Text
           fontWeight={400}

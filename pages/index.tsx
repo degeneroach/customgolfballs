@@ -6,6 +6,7 @@ import PricingSection from "@/components/Layout/PricingSection";
 import OrderModal from "@/components/Modal/OrderModal";
 import Shape from "@/components/UI/Shape";
 import { Container, useDisclosure } from "@chakra-ui/react";
+import { Analytics } from "@vercel/analytics/react"
 import Head from "next/head";
 import React from "react";
 
