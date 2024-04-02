@@ -172,13 +172,11 @@ const createPriceCalculationSlice: StateCreator<
 
   setSingleSidedSetup: (cost: number) =>
     set((state) => ({
-      singleSidedSetup:
-        state.ballType != "StarStrike" ? state.singleSidedSetupCS : cost,
+      singleSidedSetup: cost,
     })),
   setDoubleSidedSetup: (cost: number) =>
     set((state) => ({
-      doubleSidedSetup:
-        state.ballType != "StarStrike" ? state.doubleSidedSetupCS : cost,
+      doubleSidedSetup: cost,
     })),
 
   //StarStrike
