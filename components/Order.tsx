@@ -34,8 +34,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const frontSideImage = useBoundStore((state) => state.frontSideImage);
   const backSideImage = useBoundStore((state) => state.backSideImage);
   const ballType = useBoundStore((state) => state.ballType);
-  const singleSidedSetupSS = useBoundStore((state) => state.singleSidedSetupSS);
-  const doubleSidedSetupSS = useBoundStore((state) => state.doubleSidedSetupSS);
+
   const setTaxPST = useBoundStore((state) => state.setTaxPST);
   const setTaxGst = useBoundStore((state) => state.setTaxGST);
   const setIsDoubleSided = useBoundStore((state) => state.setIsDoubleSided);
@@ -62,6 +61,14 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setDoubleSidedSetup = useBoundStore(
     (state) => state.setDoubleSidedSetup
   );
+
+  //Setup Cost
+  const singleSidedSetupSS = useBoundStore((state) => state.singleSidedSetupSS);
+  const doubleSidedSetupSS = useBoundStore((state) => state.doubleSidedSetupSS);
+  const singleSidedSetupCS = useBoundStore((state) => state.singleSidedSetupCS);
+  const doubleSidedSetupCS = useBoundStore((state) => state.doubleSidedSetupCS);
+  const singleSidedSetupTP = useBoundStore((state) => state.singleSidedSetupTP);
+  const doubleSidedSetupTP = useBoundStore((state) => state.doubleSidedSetupTP);
 
   //Ball Cost
   const setBallCostSS = useBoundStore((state) => state.setBallCostSS);
@@ -166,9 +173,19 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     name: "package",
     defaultValue: ballType || "StarStrike",
     onChange: (value) => {
-      setBallType(value),
+      setBallType(value);
+      if (value === "StarStrike") {
         setSingleSidedSetup(singleSidedSetupSS),
         setDoubleSidedSetup(doubleSidedSetupSS);
+      }
+      if (value === "Callaway SuperSoft") {
+        setSingleSidedSetup(singleSidedSetupCS),
+        setDoubleSidedSetup(doubleSidedSetupCS);
+      }
+      if (value === "Titleist Pro V1") {
+        setSingleSidedSetup(singleSidedSetupTP),
+        setDoubleSidedSetup(doubleSidedSetupTP);
+      }
     },
   });
 
@@ -182,8 +199,19 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     const selectedOption = options[swiper.activeIndex];
 
     setBallType(selectedOption);
-    setSingleSidedSetup(singleSidedSetupSS),
-    setDoubleSidedSetup(doubleSidedSetupSS);
+
+    if (selectedOption === "StarStrike") {
+      setSingleSidedSetup(singleSidedSetupSS),
+      setDoubleSidedSetup(doubleSidedSetupSS);
+    }
+    if (selectedOption === "Callaway SuperSoft") {
+      setSingleSidedSetup(singleSidedSetupCS),
+      setDoubleSidedSetup(doubleSidedSetupCS);
+    }
+    if (selectedOption === "Titleist Pro V1") {
+      setSingleSidedSetup(singleSidedSetupTP),
+      setDoubleSidedSetup(doubleSidedSetupTP);
+    }
   };
 
   const initialSlide = (ballType: string) => {
