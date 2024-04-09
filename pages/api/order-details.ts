@@ -1,18 +1,14 @@
 import OrderDetails from "@/models/OrderDetails";
-import dbConnect from "@/utils/mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NextRequest, NextResponse } from "next/server";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await dbConnect();
-
   if (req.method === "POST") {
     try {
       const data = await req.body;
-    
+
       const createOrderDetails = await OrderDetails.create(data);
 
       res.status(201).json(createOrderDetails.toJSON());
@@ -29,5 +25,4 @@ export default async function handler(
       res.status(404).json({ error: "Bad Request" });
     }
   }
-
 }
