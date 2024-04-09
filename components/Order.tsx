@@ -125,10 +125,12 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
             setBallCostTP(price.price);
             break;
           case "SINGLE_SIDED_SETUP":
-            setSingleSidedSetupSS(price.price || 0)
+            setSingleSidedSetupSS(price.price || 0);
+            setSingleSidedSetup(price.price || 0); //Default Value
             break;
           case "DOUBLE_SIDED_SETUP":
             setDoubleSidedSetupSS(price.price || 0);
+            setDoubleSidedSetup(price.price || 0); //Default Value
             break;
           case "SINGLE_SIDED_PRINT":
             setSingleSidedPrint(price.price || 0);
@@ -137,13 +139,13 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
             setDoubleSidedPrint(price.price || 0);
             break;
           case "SINGLE_SIDED_SETUP_CS":
-            setSingleSidedSetupCS(price.price || 0)
+            setSingleSidedSetupCS(price.price || 0);
             break;
           case "DOUBLE_SIDED_SETUP_CS":
             setDoubleSidedSetupCS(price.price || 0);
             break;
           case "SINGLE_SIDED_SETUP_TP":
-              setSingleSidedSetupTP(price.price || 0)
+            setSingleSidedSetupTP(price.price || 0);
             break;
           case "DOUBLE_SIDED_SETUP_TP":
             setDoubleSidedSetupTP(price.price || 0);
@@ -152,11 +154,11 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
             setShippingFee(price.price || 0);
             break;
           case "TAX_GST":
-              setTaxGst(price.price || 0);
-              break;
+            setTaxGst(price.price || 0);
+            break;
           case "TAX_PST":
-              setTaxPST(price.price || 0);
-              break;
+            setTaxPST(price.price || 0);
+            break;
           default:
             break;
         }
@@ -176,15 +178,15 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
       setBallType(value);
       if (value === "StarStrike") {
         setSingleSidedSetup(singleSidedSetupSS),
-        setDoubleSidedSetup(doubleSidedSetupSS);
+          setDoubleSidedSetup(doubleSidedSetupSS);
       }
       if (value === "Callaway SuperSoft") {
         setSingleSidedSetup(singleSidedSetupCS),
-        setDoubleSidedSetup(doubleSidedSetupCS);
+          setDoubleSidedSetup(doubleSidedSetupCS);
       }
       if (value === "Titleist Pro V1") {
         setSingleSidedSetup(singleSidedSetupTP),
-        setDoubleSidedSetup(doubleSidedSetupTP);
+          setDoubleSidedSetup(doubleSidedSetupTP);
       }
     },
   });
@@ -202,15 +204,15 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
 
     if (selectedOption === "StarStrike") {
       setSingleSidedSetup(singleSidedSetupSS),
-      setDoubleSidedSetup(doubleSidedSetupSS);
+        setDoubleSidedSetup(doubleSidedSetupSS);
     }
     if (selectedOption === "Callaway SuperSoft") {
       setSingleSidedSetup(singleSidedSetupCS),
-      setDoubleSidedSetup(doubleSidedSetupCS);
+        setDoubleSidedSetup(doubleSidedSetupCS);
     }
     if (selectedOption === "Titleist Pro V1") {
       setSingleSidedSetup(singleSidedSetupTP),
-      setDoubleSidedSetup(doubleSidedSetupTP);
+        setDoubleSidedSetup(doubleSidedSetupTP);
     }
   };
 
