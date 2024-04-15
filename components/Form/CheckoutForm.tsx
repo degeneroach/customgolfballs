@@ -65,8 +65,8 @@ const CheckoutForm: React.FC<{
 
     const { error, paymentIntent } = await stripe?.confirmPayment({
       elements,
-      confirmParams: { return_url: "http://localhost:3000/success" },
-      redirect: 'if_required'
+      confirmParams: { return_url: `${window.location.origin}` },
+      redirect: "if_required",
     });
 
     if (error) setErrorMessage(error.message as any);
@@ -95,7 +95,7 @@ const CheckoutForm: React.FC<{
         grandTotal,
         firstName,
         lastName,
-        shippingDetails
+        shippingDetails,
       });
 
       clearFrontSideImage();
@@ -137,7 +137,7 @@ const CheckoutForm: React.FC<{
             borderRadius="0.5rem"
             isDisabled={isLoading || !stripe || !elements}
           >
-            PAY ${totalPrice.toFixed(2)}
+            PAY ${(paymentIntent?.amount! / 100).toFixed(2)}
           </PrimaryButton>
           {errorMessage && (
             <Text textAlign={"center"} color={"red"} fontSize={"md"}>
