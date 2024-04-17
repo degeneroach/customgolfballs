@@ -98,7 +98,7 @@ const AddressSection = () => {
         )}
       </VStack>
       <Flex alignItems={"flex-end"} my={{ base: 5, md: 0 }}>
-        <Image src="../images/Map.svg" alt="Map" />
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10415.400960929806!2d-123.0357668!3d49.2602844!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5486776f67da4d17%3A0xca7d07d0b4313628!2sCustom%20Golf%20Ball%20Printing!5e0!3m2!1sen!2sca!4v1713379171523!5m2!1sen!2sca" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </Flex>
     </Stack>
   );

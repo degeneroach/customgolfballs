@@ -3,3 +3,13 @@
   padding: 0;
   margin: 0;
 }
+
+iframe {
+  width:650px;
+  @media only screen and (max-width: 1000px) {
+    width:300px !important;
+  }
+  @media only screen and (max-width: 450px) {
+    width:100% !important;
+  }
+}
