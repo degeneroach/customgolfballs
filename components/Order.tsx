@@ -236,14 +236,12 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
           Order online
         </Text>
         <Text
-          fontSize={"xs"}
+          fontSize={"s"}
           width={{ base: "20rem", md: "40.75rem" }}
           textAlign={"center"}
           overflowWrap={"break-word"}
         >
-          We offer shipping and local pick up on our online orders. For online
-          orders we offer StarStrike Golf Balls. They are comparable to
-          Kirklands and play great. Use the below tool to submit your artwork.
+          We offer Titleist Pro V1, Callaway SuperSoft, and StarStrike Golf Balls.
         </Text>
       </Stack>
 
@@ -252,8 +250,8 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
       </Text>
 
       {isMobileView && (
-        <Text fontSize={"xs"} textAlign={"center"} mb={4}>
-          Swipe for more options
+        <Text fontSize={"s"} textAlign={"center"} sx={{color: `#2EC4B6`, fontWeight: '700'}} mb={4}>
+          Swipe right for more options.
         </Text>
       )}
 
