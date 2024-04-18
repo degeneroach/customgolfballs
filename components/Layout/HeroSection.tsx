@@ -95,6 +95,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           leftIcon={<HiOutlinePencil />}
           size="lg"
           alignSelf={{ base: "center", md: "inherit" }}
+          bg="linear-gradient(180deg, #FFC225 0%, #FA9335 100%)" // Vertical gradient, darker at the bottom
+          color="#011638" // Custom text color
+          _hover={{
+            bg: "linear-gradient(0deg, #FFC225, #FA9335)" // Gradient on hover
+          }}
+          _active={{
+            bg: "#FFC225" // Solid color when the button is pressed
+          }}
           onClick={() => {
             track('DesktopOrderButton');
             onOpenOrderModal();
@@ -145,6 +153,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               leftIcon={<HiOutlinePencil />}
               size="lg"
               alignSelf="stretch"  // Make the button full width
+              bg="linear-gradient(180deg, #FFC225 0%, #FA9335 100%)" // Vertical gradient, darker at the bottom
+              color="#011638" // Custom text color
+              _hover={{
+                bg: "linear-gradient(0deg, #FFC225, #FA9335)" // Gradient on hover
+              }}
+              _active={{
+                bg: "#FFC225" // Solid color when the button is pressed
+              }}
               onClick={() => {
                 track('MobileOrderButton');
                 onOpenOrderModal();
