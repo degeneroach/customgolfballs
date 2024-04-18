@@ -21,6 +21,7 @@ import {
 } from "react-icons/hi";
 import TextIcon from "../UI/TextIcon";
 import { DIRECTIONS, EMAIL, EMAIL_TO, TEL_NUMBER, TEL_NUMBER_TO } from "@/utils/constants";
+import { track } from '@vercel/analytics';
 
 interface HeroSectionProps {
   onOpen: () => void;
@@ -94,7 +95,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           leftIcon={<HiOutlinePencil />}
           size="lg"
           alignSelf={{ base: "center", md: "inherit" }}
-          onClick={onOpenOrderModal}
+          onClick={() => {
+            track('DesktopOrderButton');
+            onOpenOrderModal();
+          }}
         >
           Customize Golf Balls Online
         </PrimaryButton>
@@ -141,7 +145,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               leftIcon={<HiOutlinePencil />}
               size="lg"
               alignSelf="stretch"  // Make the button full width
-              onClick={onOpenOrderModal}
+              onClick={() => {
+                track('MobileOrderButton');
+                onOpenOrderModal();
+              }}
               mb={4}  // Margin bottom for spacing
             >
               Customize Golf Balls Online
