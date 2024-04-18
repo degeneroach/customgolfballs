@@ -135,6 +135,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           boxSize={{ base: 96, md: 80 }}
           mb={{ base: 10, md: 5 }}
         />
+
+      {isMobileView && (
+            <PrimaryButton
+              leftIcon={<HiOutlinePencil />}
+              size="lg"
+              alignSelf="stretch"  // Make the button full width
+              onClick={onOpenOrderModal}
+              mb={4}  // Margin bottom for spacing
+            >
+              Customize Golf Balls Online
+            </PrimaryButton>
+          )}
+
         <Flex
           flexDirection={"column"}
           alignItems={"flex-end"}
