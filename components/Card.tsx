@@ -20,10 +20,10 @@ const Card: React.FC<any> = (props) => {
       img: "../images/StarStrike.svg",
     },
     {
-      name: "Callaway SuperSoft",
+      name: "Srixon Q Star",
       price: `$${ballCostCS} / Dozen`,
       description: "Purchase in increments of 12",
-      img: "../images/Callaway SuperSoft.svg",
+      img: "../images/srixon-q-star.png",
     },
     {
       name: "Titleist Pro V1",

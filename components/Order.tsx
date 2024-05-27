@@ -82,7 +82,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   const setDoubleSidedSetupSS = useBoundStore(
     (state) => state.setDoubleSidedSetupSS
   );
-  //Callaway SuperSoft
+  //Srixon Q Star
   const setSingleSidedSetupCS = useBoundStore(
     (state) => state.setSingleSidedSetupCS
   );
@@ -169,7 +169,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
   }, []);
 
   //Group Radio
-  const options = ["StarStrike", "Callaway SuperSoft", "Titleist Pro V1"];
+  const options = ["StarStrike", "Srixon Q Star", "Titleist Pro V1"];
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "package",
@@ -180,7 +180,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
         setSingleSidedSetup(singleSidedSetupSS),
           setDoubleSidedSetup(doubleSidedSetupSS);
       }
-      if (value === "Callaway SuperSoft") {
+      if (value === "Srixon Q Star") {
         setSingleSidedSetup(singleSidedSetupCS),
           setDoubleSidedSetup(doubleSidedSetupCS);
       }
@@ -206,7 +206,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
       setSingleSidedSetup(singleSidedSetupSS),
         setDoubleSidedSetup(doubleSidedSetupSS);
     }
-    if (selectedOption === "Callaway SuperSoft") {
+    if (selectedOption === "Srixon Q Star") {
       setSingleSidedSetup(singleSidedSetupCS),
         setDoubleSidedSetup(doubleSidedSetupCS);
     }
@@ -220,7 +220,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
     switch (ballType) {
       case "StarStrike":
         return 0;
-      case "Callaway SuperSoft":
+      case "Srixon Q Star":
         return 1;
       case "Titleist Pro V1":
         return 2;
@@ -241,7 +241,7 @@ const Order: React.FC<OrderProps> = ({ activeStep, setActiveStep }) => {
           textAlign={"center"}
           overflowWrap={"break-word"}
         >
-          We offer Titleist Pro V1, Callaway SuperSoft, and StarStrike Golf Balls.
+          We offer Titleist Pro V1, Srixon Q Star, and StarStrike Golf Balls.
         </Text>
       </Stack>
 

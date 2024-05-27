@@ -78,7 +78,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         <UnorderedList style={{marginBottom: `25px`}}>
             <ListItem>Corporate Golf Tournaments</ListItem>
             <ListItem>Custom Titleist Golf Balls</ListItem>
-            <ListItem>Custom Callaway Golf Balls</ListItem>
+            <ListItem>Custom Srixon Golf Balls</ListItem>
             <ListItem>Custom Golf Balls with Picture</ListItem>
             <ListItem>Funny Custom Golf Balls</ListItem>
             <ListItem>Faces, Dates, Weddings, and more!</ListItem>
