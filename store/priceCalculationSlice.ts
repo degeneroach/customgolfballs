@@ -132,7 +132,7 @@ const createPriceCalculationSlice: StateCreator<
       let initialTotalPrice: number;
 
       //Ball Price
-      if (state.ballType === "Callaway SuperSoft") {
+      if (state.ballType === "Srixon Q Star") {
         ballPrice = state.ballCostCS / 12;
       } else if (state.ballType === "Titleist Pro V1") {
         ballPrice = state.ballCostTP / 12;
